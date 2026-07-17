@@ -207,21 +207,112 @@ a {
   filter: saturate(0.92) contrast(0.97);
 }
 
-.hero-visual::after {
+.hero-sheet {
   position: absolute;
-  inset: -1px;
-  z-index: 1;
-  content: "";
-  background:
-    linear-gradient(90deg, var(--paper) 0%, rgb(238 236 231 / 94%) 14%, rgb(238 236 231 / 0%) 42%, rgb(238 236 231 / 0%) 72%, var(--paper) 100%),
-    linear-gradient(180deg, var(--paper) 0%, rgb(238 236 231 / 0%) 21%, rgb(238 236 231 / 0%) 66%, var(--paper) 100%);
+  display: grid;
+  grid-template-rows: 2.1rem minmax(0, 1fr) 2.4rem;
+  overflow: hidden;
+  border: 1px solid rgb(48 51 49 / 32%);
+  border-radius: 0.45rem;
+  background: var(--surface);
+  box-shadow: 0 24px 58px rgb(42 37 31 / 14%);
+}
+
+.hero-sheet-header,
+.hero-sheet-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.85rem;
+  color: var(--graphite-soft);
+  font-size: 0.57rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.hero-sheet-header {
+  border-bottom: 1px solid var(--line-strong);
+  background-image: repeating-linear-gradient(90deg, transparent 0 17px, rgb(48 51 49 / 50%) 17px 18px, transparent 18px 35px, rgb(48 51 49 / 50%) 35px 36px, transparent 36px 72px);
+  background-size: auto 0.6rem;
+  background-position: 0 bottom;
+  background-repeat: repeat-x;
+}
+
+.hero-sheet-footer {
+  border-top: 1px solid var(--line-strong);
+}
+
+.hero-sheet-body {
+  display: grid;
+  grid-template-columns: 2.05rem minmax(0, 1fr);
+  min-height: 0;
+}
+
+.hero-sheet-ruler {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--line-strong);
+  background-image: repeating-linear-gradient(180deg, transparent 0 17px, rgb(48 51 49 / 50%) 17px 18px, transparent 18px 35px, rgb(48 51 49 / 50%) 35px 36px, transparent 36px 72px);
+  background-size: 0.6rem auto;
+  background-position: right 0;
+  background-repeat: repeat-y;
+  padding: 0.65rem 0 0.65rem 0.45rem;
+  color: var(--graphite-soft);
+  font-size: 0.55rem;
+  font-weight: 800;
+}
+
+.hero-sheet-canvas {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: #d9d8d2;
+}
+
+.hero-measure,
+.hero-drawing-note {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid rgb(255 255 255 / 48%);
+  background: rgb(33 35 34 / 42%);
+  color: #f9f8f4;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-measure {
+  padding: 0.34rem 0.48rem;
+}
+
+.hero-measure-horizontal {
+  top: 1rem;
+  right: 1rem;
+}
+
+.hero-measure-vertical {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.hero-drawing-note {
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.42rem 0.54rem;
 }
 
 .hero-construction-sweep {
   position: absolute;
   top: 13%;
   bottom: 13%;
-  z-index: 2;
+  z-index: 3;
   width: 16%;
   background: linear-gradient(90deg, transparent, rgb(249 248 244 / 12%), rgb(249 248 244 / 78%), rgb(249 248 244 / 12%), transparent);
   filter: blur(5px);

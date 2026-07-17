@@ -56,7 +56,7 @@ export function Hero() {
       className="relative isolate overflow-hidden px-4 pb-4 pt-10 sm:px-6 lg:px-10 lg:pb-8 lg:pt-14"
     >
       <div className="architect-grid pointer-events-none absolute inset-x-0 top-0 h-[65%] opacity-50" />
-      <div className="relative z-10 mx-auto flex min-h-[570px] max-w-[1440px] items-center py-6 sm:min-h-[610px] lg:min-h-[680px] lg:py-0">
+      <div className="relative z-10 mx-auto grid max-w-[1440px] items-center gap-10 py-6 sm:gap-12 lg:min-h-[680px] lg:grid-cols-[minmax(0,0.66fr)_minmax(0,1.34fr)] lg:gap-12 lg:py-0">
         <div className="max-w-xl lg:pt-2">
           <p data-hero-reveal className="section-kicker">Строим в Москве и области</p>
           <h1
@@ -92,17 +92,43 @@ export function Hero() {
             </div>
           </div>
         </div>
-      </div>
-      <div data-hero-visual className="hero-visual pointer-events-none relative z-0 -mt-20 min-h-[390px] sm:-mt-28 sm:min-h-[520px] lg:absolute lg:-bottom-[12%] lg:-right-[12%] lg:-top-[8%] lg:mt-0 lg:w-[72%]">
-        <Image
-          src="./images/hero-blueprint-house.png"
-          alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
-          fill
-          priority
-          sizes="(max-width: 1023px) 100vw, 72vw"
-          className="object-cover object-[62%_center]"
-        />
-        <span data-hero-sweep className="hero-construction-sweep" aria-hidden="true" />
+        <div data-hero-visual className="hero-visual pointer-events-none relative min-h-[350px] sm:min-h-[470px] lg:min-h-[520px]">
+          <div className="hero-sheet absolute inset-0">
+            <div className="hero-sheet-header">
+              <span>А-01 / Фасад</span>
+              <span>Стадия: эскиз</span>
+            </div>
+            <div className="hero-sheet-body">
+              <div className="hero-sheet-ruler" aria-hidden="true">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+              </div>
+              <div className="hero-sheet-canvas">
+                <Image
+                  src="./images/hero-blueprint-house.png"
+                  alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
+                  fill
+                  priority
+                  sizes="(max-width: 1023px) 100vw, 58vw"
+                  className="object-cover object-[58%_center]"
+                />
+                <span className="hero-measure hero-measure-horizontal">24 000 мм</span>
+                <span className="hero-measure hero-measure-vertical">9 450 мм</span>
+                <span className="hero-drawing-note">Кирпичный фасад</span>
+                <span data-hero-sweep className="hero-construction-sweep" aria-hidden="true" />
+              </div>
+            </div>
+            <div className="hero-sheet-footer">
+              <span>Проект жилого дома</span>
+              <span>М 1:100</span>
+              <span>Лист 01</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
