@@ -22,7 +22,7 @@ export function BeforeAfter() {
         </div>
         <div className="image-frame relative mt-10 aspect-[16/9] min-h-[330px] sm:min-h-[480px]">
           <Image
-            src="/images/project-birch.png"
+            src="./images/project-birch.png"
             alt="Вариант исполнения современного кирпичного дома"
             fill
             sizes="100vw"
@@ -30,7 +30,7 @@ export function BeforeAfter() {
           />
           <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
             <Image
-              src="/images/hero-blueprint-house.png"
+              src="./images/hero-blueprint-house.png"
               alt="Архитектурная визуализация дома на чертеже"
               fill
               sizes="100vw"

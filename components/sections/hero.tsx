@@ -101,7 +101,7 @@ export function Hero() {
           <div className="absolute -right-4 top-[8%] h-[76%] w-[84%] rounded-[1.8rem] border border-[var(--line)] bg-[var(--paper-strong)]" />
           <div ref={imageLayer} className="image-frame absolute inset-x-0 bottom-0 top-4 z-10 sm:left-7 sm:right-0 sm:top-0">
             <Image
-              src="/images/hero-blueprint-house.png"
+              src="./images/hero-blueprint-house.png"
               alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
               fill
               priority

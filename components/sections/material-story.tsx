@@ -8,7 +8,7 @@ export function MaterialStory() {
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-16" data-reveal>
         <div className="image-frame relative min-h-[430px] lg:min-h-[620px]">
           <Image
-            src="/images/project-courtyard.png"
+            src="./images/project-courtyard.png"
             alt="Архитектурное решение кирпичного дома с внутренним двором"
             fill
             sizes="(max-width: 1023px) 100vw, 45vw"

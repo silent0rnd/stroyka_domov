@@ -24,7 +24,7 @@ export function Transparency() {
         </div>
         <div className="image-frame relative min-h-[390px] lg:min-h-[540px]">
           <Image
-            src="/images/project-pine.png"
+            src="./images/project-pine.png"
             alt="Вариант исполнения кирпичного дома в природном окружении"
             fill
             sizes="(max-width: 1023px) 100vw, 45vw"

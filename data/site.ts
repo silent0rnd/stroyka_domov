@@ -66,7 +66,7 @@ export const materialReasons = [
 export const projects: Project[] = [
   {
     title: "Сосны",
-    image: "/images/project-pine.png",
+    image: "./images/project-pine.png",
     alt: "Концептуальный проект кирпичного дома среди сосен",
     area: "218 м²",
     floors: "2 этажа",
@@ -77,7 +77,7 @@ export const projects: Project[] = [
   },
   {
     title: "Внутренний сад",
-    image: "/images/project-courtyard.png",
+    image: "./images/project-courtyard.png",
     alt: "Концептуальный одноэтажный кирпичный дом с внутренним садом",
     area: "265 м²",
     floors: "1 этаж",
@@ -88,7 +88,7 @@ export const projects: Project[] = [
   },
   {
     title: "Березовый свет",
-    image: "/images/project-birch.png",
+    image: "./images/project-birch.png",
     alt: "Концептуальный двухэтажный кирпичный дом в березовом окружении",
     area: "310 м²",
     floors: "2 этажа",
@@ -99,7 +99,7 @@ export const projects: Project[] = [
   },
   {
     title: "Линия участка",
-    image: "/images/hero-blueprint-house.png",
+    image: "./images/hero-blueprint-house.png",
     alt: "Концептуальный кирпичный дом в переходе от чертежа к готовой архитектуре",
     area: "280 м²",
     floors: "2 этажа",
@@ -112,22 +112,22 @@ export const projects: Project[] = [
 
 export const galleryItems = [
   {
-    image: "/images/project-courtyard.png",
+    image: "./images/project-courtyard.png",
     alt: "Архитектурное решение кирпичного дома с закрытым внутренним двором",
     title: "Приватный внутренний двор"
   },
   {
-    image: "/images/project-birch.png",
+    image: "./images/project-birch.png",
     alt: "Архитектурное решение двухэтажного кирпичного дома у берез",
     title: "Фасад в природном окружении"
   },
   {
-    image: "/images/project-pine.png",
+    image: "./images/project-pine.png",
     alt: "Архитектурное решение компактного кирпичного дома среди сосен",
     title: "Теплый свет в хвойном лесу"
   },
   {
-    image: "/images/hero-blueprint-house.png",
+    image: "./images/hero-blueprint-house.png",
     alt: "Архитектурная визуализация перехода от чертежа к кирпичному дому",
     title: "От проекта к материалу"
   }
