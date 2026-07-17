@@ -14,11 +14,13 @@ export function ConstructionRoute() {
           </p>
         </div>
         <ol className="relative grid gap-1">
-          <div className="absolute bottom-8 left-[1.12rem] top-8 w-px bg-[var(--line)]" aria-hidden="true">
-            <div data-route-line className="route-line h-full w-full bg-[var(--brick)]" />
-          </div>
-          {constructionSteps.map((step) => (
+          {constructionSteps.map((step, index) => (
             <li key={step} className="relative flex gap-5 py-5">
+              {index < constructionSteps.length - 1 ? (
+                <span className="absolute bottom-[-1.5rem] left-[1.12rem] top-14 w-px bg-[var(--line)]" aria-hidden="true">
+                  <span data-route-line className="route-line block h-full w-full bg-[var(--brick)]" />
+                </span>
+              ) : null}
               <span className="relative z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--line-strong)] bg-[var(--paper)] text-[var(--brick-deep)]">
                 <Icon name="check" size={17} weight="bold" />
               </span>

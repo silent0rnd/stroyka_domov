@@ -20,7 +20,9 @@ export function Faq() {
                 {faq.question}
                 <Icon name="plus" className="faq-plus shrink-0 text-[var(--brick)]" size={24} weight="bold" />
               </summary>
-              <p className="max-w-2xl pb-6 pr-8 text-sm leading-7 text-[var(--ink-soft)]">{faq.answer}</p>
+              <div className="faq-answer">
+                <p className="max-w-2xl pb-6 pr-8 text-sm leading-7 text-[var(--ink-soft)]">{faq.answer}</p>
+              </div>
             </details>
           ))}
         </div>

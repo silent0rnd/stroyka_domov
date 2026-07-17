@@ -79,15 +79,15 @@ export function Hero() {
             </a>
             <a href="#projects" className="button-secondary">Смотреть проекты</a>
           </div>
-          <div data-hero-reveal className="mt-8 flex flex-wrap gap-3">
-            <div className="glass-panel flex min-w-[9.4rem] items-center gap-3 rounded-[0.8rem] px-3.5 py-3">
+          <div data-hero-reveal className="mt-4 flex max-w-[29rem] flex-wrap gap-3 sm:flex-nowrap">
+            <div className="glass-panel flex min-h-[5.5rem] flex-1 basis-[12rem] items-center gap-4 rounded-[1rem] px-5 py-4">
               <Ruler size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">Стоимость</p>
                 <p className="mt-0.5 text-sm font-extrabold">от 12 млн ₽</p>
               </div>
             </div>
-            <div className="glass-panel flex min-w-[9.4rem] items-center gap-3 rounded-[0.8rem] px-3.5 py-3">
+            <div className="glass-panel flex min-h-[5.5rem] flex-1 basis-[12rem] items-center gap-4 rounded-[1rem] px-5 py-4">
               <Timer size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">Срок</p>
@@ -98,8 +98,7 @@ export function Hero() {
         </div>
 
         <div data-hero-reveal className="relative min-h-[400px] sm:min-h-[500px] lg:min-h-[620px]">
-          <div className="absolute -right-4 top-[8%] h-[76%] w-[84%] rounded-[1.8rem] border border-[var(--line)] bg-[var(--paper-strong)]" />
-          <div ref={imageLayer} className="image-frame absolute inset-x-0 bottom-0 top-4 z-10 sm:left-7 sm:right-0 sm:top-0">
+          <div ref={imageLayer} className="hero-image absolute inset-x-0 bottom-0 top-4 z-10 sm:left-7 sm:right-0 sm:top-0">
             <Image
               src="./images/hero-blueprint-house.png"
               alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"

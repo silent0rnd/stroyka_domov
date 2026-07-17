@@ -5,22 +5,8 @@
 ▲ Next.js 16.2.10 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://10.8.1.1:3000
-✓ Ready in 652ms
+✓ Ready in 565ms
 
- GET / 200 in 3.4s (next.js: 2.8s, application-code: 608ms)
-[browser] Image with src "/images/hero-blueprint-house.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
-✓ Compiled in 66ms
- GET / 200 in 130ms (next.js: 62ms, application-code: 68ms)
- GET / 200 in 183ms (next.js: 59ms, application-code: 124ms)
- GET / 200 in 58ms (next.js: 3ms, application-code: 55ms)
-✓ Compiled in 36ms
- GET / 200 in 104ms (next.js: 49ms, application-code: 55ms)
-✓ Compiled in 36ms
- GET / 200 in 104ms (next.js: 50ms, application-code: 54ms)
- GET / 200 in 299ms (next.js: 3ms, application-code: 296ms)
- GET / 200 in 175ms (next.js: 4ms, application-code: 171ms)
-✓ Compiled in 70ms
- GET / 200 in 160ms (next.js: 68ms, application-code: 92ms)
- GET / 200 in 288ms (next.js: 3ms, application-code: 285ms)
- GET / 200 in 170ms (next.js: 3ms, application-code: 167ms)
+ GET / 200 in 3.4s (next.js: 2.8s, application-code: 614ms)
+ GET / 200 in 177ms (next.js: 5ms, application-code: 171ms)
+ GET / 200 in 166ms (next.js: 4ms, application-code: 162ms)

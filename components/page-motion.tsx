@@ -18,15 +18,18 @@ export function PageMotion({ children }: { children: ReactNode }) {
         return;
       }
 
-      root.current.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => {
-        gsap.from(element, {
-          opacity: 0,
-          y: 28,
-          duration: 0.7,
+      root.current.querySelectorAll<HTMLElement>("main > section:not(#top), [data-reveal-item]").forEach((element) => {
+        gsap.fromTo(element, {
+          autoAlpha: 0,
+          y: 42
+        }, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.85,
           ease: "power3.out",
           scrollTrigger: {
             trigger: element,
-            start: "top 84%",
+            start: "top 88%",
             once: true
           }
         });
