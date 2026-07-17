@@ -1,12 +1,9 @@
 
 > dom-kirpich-landing@0.1.0 dev
-> next dev --port 3000
+> next dev --hostname 127.0.0.1 --port 3000
 
 ▲ Next.js 16.2.10 (Turbopack)
-- Local:         http://localhost:3000
-- Network:       http://10.8.1.1:3000
-✓ Ready in 565ms
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+✓ Ready in 681ms
 
- GET / 200 in 3.4s (next.js: 2.8s, application-code: 614ms)
- GET / 200 in 177ms (next.js: 5ms, application-code: 171ms)
- GET / 200 in 166ms (next.js: 4ms, application-code: 162ms)

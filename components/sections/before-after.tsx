@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowsHorizontal } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -20,9 +21,9 @@ export function BeforeAfter() {
           </div>
           <p className="text-sm font-extrabold text-[var(--brick-deep)]">Проект / вариант исполнения</p>
         </div>
-        <div className="image-frame relative mt-10 aspect-[16/9] min-h-[330px] sm:min-h-[480px]">
+        <div className="before-after-stage relative mt-10 aspect-[16/9] min-h-[330px] sm:min-h-[480px]">
           <Image
-            src="./images/project-birch.png"
+            src="./images/facade-built.png"
             alt="Вариант исполнения современного кирпичного дома"
             fill
             sizes="100vw"
@@ -30,16 +31,16 @@ export function BeforeAfter() {
           />
           <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
             <Image
-              src="./images/hero-blueprint-house.png"
+              src="./images/facade-blueprint.png"
               alt="Архитектурная визуализация дома на чертеже"
               fill
               sizes="100vw"
-              className="object-cover object-[60%_center]"
+              className="object-cover"
             />
           </div>
           <div className="pointer-events-none absolute bottom-0 top-0 z-[3] w-px bg-[var(--surface)]" style={{ left: `${position}%` }} aria-hidden="true">
-            <span className="absolute left-1/2 top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--line-strong)] bg-[var(--surface)] text-lg font-black text-[var(--brick-deep)]">
-              ↔
+            <span className="absolute left-1/2 top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--line-strong)] bg-[var(--surface)] text-[var(--brick-deep)]">
+              <ArrowsHorizontal size={20} weight="bold" aria-hidden="true" />
             </span>
           </div>
           <input

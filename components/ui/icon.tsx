@@ -9,7 +9,8 @@ import {
   Path,
   Plus,
   Scales,
-  ShieldCheck
+  ShieldCheck,
+  UserFocus
 } from "@phosphor-icons/react";
 
 const icons = {
@@ -21,7 +22,8 @@ const icons = {
   path: Path,
   plus: Plus,
   scales: Scales,
-  "shield-check": ShieldCheck
+  "shield-check": ShieldCheck,
+  "user-focus": UserFocus
 };
 
 export type IconName = keyof typeof icons;

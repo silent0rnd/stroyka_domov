@@ -2,8 +2,8 @@ import { Icon, type IconName } from "@/components/ui/icon";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { benefits } from "@/data/site";
 
-const icons: IconName[] = ["scales", "shield-check", "path", "calendar-check"];
-const cardSizes = ["xl:col-span-5", "xl:col-span-3", "xl:col-span-4", "xl:col-span-6"];
+const icons: IconName[] = ["scales", "shield-check", "path", "calendar-check", "user-focus"];
+const cardSizes = ["xl:col-span-5", "xl:col-span-3", "xl:col-span-4", "xl:col-span-6", "xl:col-span-6"];
 
 export function Benefits() {
   return (

@@ -4,11 +4,10 @@ import { useGSAP } from "@gsap/react";
 import { ArrowRight, Ruler, Timer } from "@phosphor-icons/react";
 import gsap from "gsap";
 import Image from "next/image";
-import { type PointerEvent, useRef } from "react";
+import { useRef } from "react";
 
 export function Hero() {
   const section = useRef<HTMLElement>(null);
-  const imageLayer = useRef<HTMLDivElement>(null);
   const prefersReducedMotion =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -29,39 +28,15 @@ export function Hero() {
     { scope: section, dependencies: [prefersReducedMotion], revertOnUpdate: true }
   );
 
-  const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (
-      prefersReducedMotion ||
-      event.pointerType !== "mouse" ||
-      !window.matchMedia("(hover: hover)").matches ||
-      !imageLayer.current
-    ) {
-      return;
-    }
-
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-
-    gsap.to(imageLayer.current, {
-      x: x * -12,
-      y: y * -9,
-      duration: 0.8,
-      ease: "power3.out",
-      overwrite: "auto"
-    });
-  };
-
   return (
     <section
       id="top"
       ref={section}
-      className="relative overflow-hidden px-4 pb-12 pt-10 sm:px-6 lg:px-10 lg:pb-16 lg:pt-14"
-      onPointerMove={handlePointerMove}
+      className="relative isolate overflow-hidden px-4 pb-4 pt-10 sm:px-6 lg:px-10 lg:pb-8 lg:pt-14"
     >
       <div className="architect-grid pointer-events-none absolute inset-x-0 top-0 h-[65%] opacity-50" />
-      <div className="mx-auto grid min-h-[690px] max-w-[1440px] items-center gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14">
-        <div className="relative z-10 max-w-xl lg:pt-2">
+      <div className="relative z-10 mx-auto flex min-h-[570px] max-w-[1440px] items-center py-6 sm:min-h-[610px] lg:min-h-[680px] lg:py-0">
+        <div className="max-w-xl lg:pt-2">
           <p data-hero-reveal className="section-kicker">Строим в Москве и области</p>
           <h1
             data-hero-reveal
@@ -79,15 +54,15 @@ export function Hero() {
             </a>
             <a href="#projects" className="button-secondary">Смотреть проекты</a>
           </div>
-          <div data-hero-reveal className="mt-4 flex max-w-[29rem] flex-wrap gap-3 sm:flex-nowrap">
-            <div className="glass-panel flex min-h-[5.5rem] flex-1 basis-[12rem] items-center gap-4 rounded-[1rem] px-5 py-4">
+          <div data-hero-reveal className="hero-facts mt-7 flex max-w-[31rem] flex-wrap">
+            <div className="hero-fact flex items-center gap-3">
               <Ruler size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">Стоимость</p>
                 <p className="mt-0.5 text-sm font-extrabold">от 12 млн ₽</p>
               </div>
             </div>
-            <div className="glass-panel flex min-h-[5.5rem] flex-1 basis-[12rem] items-center gap-4 rounded-[1rem] px-5 py-4">
+            <div className="hero-fact flex items-center gap-3">
               <Timer size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">Срок</p>
@@ -96,19 +71,16 @@ export function Hero() {
             </div>
           </div>
         </div>
-
-        <div data-hero-reveal className="relative min-h-[400px] sm:min-h-[500px] lg:min-h-[620px]">
-          <div ref={imageLayer} className="hero-image absolute inset-x-0 bottom-0 top-4 z-10 sm:left-7 sm:right-0 sm:top-0">
-            <Image
-              src="./images/hero-blueprint-house.png"
-              alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
-              fill
-              priority
-              sizes="(max-width: 1023px) 100vw, 58vw"
-              className="object-cover object-[62%_center]"
-            />
-          </div>
-        </div>
+      </div>
+      <div data-hero-reveal className="hero-visual pointer-events-none relative z-0 -mt-20 min-h-[390px] sm:-mt-28 sm:min-h-[520px] lg:absolute lg:-bottom-[12%] lg:-right-[12%] lg:-top-[8%] lg:mt-0 lg:w-[72%]">
+        <Image
+          src="./images/hero-blueprint-house.png"
+          alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
+          fill
+          priority
+          sizes="(max-width: 1023px) 100vw, 72vw"
+          className="object-cover object-[62%_center]"
+        />
       </div>
     </section>
   );
