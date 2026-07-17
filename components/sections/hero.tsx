@@ -65,7 +65,7 @@ export function Hero() {
           <p data-hero-reveal className="section-kicker">Строим в Москве и области</p>
           <h1
             data-hero-reveal
-            className="mt-5 max-w-[13ch] text-[clamp(2.85rem,4.2vw,4.5rem)] font-extrabold leading-[0.96] tracking-[-0.075em] text-[var(--graphite)]"
+            className="mt-5 max-w-[13ch] text-[clamp(2.5rem,4.2vw,4.5rem)] font-extrabold leading-[0.96] tracking-[-0.075em] text-[var(--graphite)]"
           >
             Кирпичный дом. Надолго.
           </h1>
