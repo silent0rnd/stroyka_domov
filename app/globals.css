@@ -201,8 +201,16 @@ a {
 .hero-visual {
   isolation: isolate;
   filter: saturate(0.92) contrast(0.97);
-  -webkit-mask-image: radial-gradient(ellipse 84% 80% at 61% 52%, #000 40%, rgb(0 0 0 / 94%) 58%, rgb(0 0 0 / 54%) 77%, transparent 100%);
-  mask-image: radial-gradient(ellipse 84% 80% at 61% 52%, #000 40%, rgb(0 0 0 / 94%) 58%, rgb(0 0 0 / 54%) 77%, transparent 100%);
+}
+
+.hero-visual::after {
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  content: "";
+  background:
+    linear-gradient(90deg, var(--paper) 0%, rgb(238 236 231 / 94%) 14%, rgb(238 236 231 / 0%) 42%, rgb(238 236 231 / 0%) 72%, var(--paper) 100%),
+    linear-gradient(180deg, var(--paper) 0%, rgb(238 236 231 / 0%) 21%, rgb(238 236 231 / 0%) 66%, var(--paper) 100%);
 }
 
 .before-after-stage {
