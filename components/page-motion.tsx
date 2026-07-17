@@ -47,6 +47,32 @@ export function PageMotion({ children }: { children: ReactNode }) {
           }
         });
       });
+
+      root.current.querySelectorAll<HTMLElement>("[data-route-step]").forEach((step) => {
+        ScrollTrigger.create({
+          trigger: step,
+          start: "top 62%",
+          once: true,
+          onEnter: () => step.classList.add("is-active")
+        });
+      });
+
+      root.current.querySelectorAll<HTMLElement>("[data-image-parallax]").forEach((image) => {
+        gsap.fromTo(image, {
+          yPercent: -4,
+          scale: 1.16,
+          transformOrigin: "center center"
+        }, {
+          yPercent: 4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: image.parentElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.55
+          }
+        });
+      });
     },
     { scope: root, dependencies: [prefersReducedMotion], revertOnUpdate: true }
   );

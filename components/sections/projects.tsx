@@ -63,9 +63,9 @@ export function Projects() {
           className="project-rail mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 pr-4 outline-none"
           aria-label="Галерея концептуальных проектов. Используйте стрелки влево и вправо для прокрутки."
         >
-          {projects.map((project) => (
-            <article key={project.title} className="w-[min(84vw,25rem)] shrink-0 snap-start">
-              <div className="image-frame relative aspect-[4/3]">
+          {projects.map((project, index) => (
+            <article key={project.title} className="group w-[min(84vw,25rem)] shrink-0 snap-start">
+              <div className="image-frame project-frame relative aspect-[4/3]">
                 <Image
                   src={project.image}
                   alt={project.alt}
@@ -73,6 +73,8 @@ export function Projects() {
                   sizes="(max-width: 640px) 84vw, 400px"
                   className="object-cover"
                 />
+                <span className="project-number absolute left-4 top-4">0{index + 1}</span>
+                <span className="project-area absolute bottom-4 left-4">{project.area}</span>
               </div>
               <div className="mt-4 grid gap-3 border-t border-[var(--line)] pt-4">
                 <div className="flex items-start justify-between gap-4">

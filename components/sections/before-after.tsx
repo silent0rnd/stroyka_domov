@@ -2,13 +2,36 @@
 
 import { ArrowsHorizontal } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function BeforeAfter() {
   const [position, setPosition] = useState(52);
+  const section = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const currentSection = section.current;
+
+    if (!currentSection || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      window.setTimeout(() => setPosition(46), 450);
+      window.setTimeout(() => setPosition(52), 1500);
+      observer.disconnect();
+    }, { threshold: 0.45 });
+
+    observer.observe(currentSection);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+    <section ref={section} className="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
       <div className="mx-auto max-w-[1440px]" data-reveal>
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
@@ -29,7 +52,7 @@ export function BeforeAfter() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
+          <div className="absolute inset-0 overflow-hidden transition-[clip-path] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
             <Image
               src="./images/facade-blueprint.png"
               alt="Архитектурная визуализация дома на чертеже"
@@ -38,7 +61,9 @@ export function BeforeAfter() {
               className="object-cover"
             />
           </div>
-          <div className="pointer-events-none absolute bottom-0 top-0 z-[3] w-px bg-[var(--surface)]" style={{ left: `${position}%` }} aria-hidden="true">
+          <span className="before-after-label absolute left-5 top-5 z-[2]">Чертеж</span>
+          <span className="before-after-label absolute right-5 top-5 z-[2]">Готовый фасад</span>
+          <div className="pointer-events-none absolute bottom-0 top-0 z-[3] w-px bg-[var(--surface)] transition-[left] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ left: `${position}%` }} aria-hidden="true">
             <span className="absolute left-1/2 top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--line-strong)] bg-[var(--surface)] text-[var(--brick-deep)]">
               <ArrowsHorizontal size={20} weight="bold" aria-hidden="true" />
             </span>

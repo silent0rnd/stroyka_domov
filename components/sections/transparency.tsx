@@ -28,6 +28,7 @@ export function Transparency() {
             alt="Вариант исполнения кирпичного дома в природном окружении"
             fill
             sizes="(max-width: 1023px) 100vw, 45vw"
+            data-image-parallax
             className="object-cover"
           />
         </div>

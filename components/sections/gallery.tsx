@@ -25,6 +25,7 @@ export function Gallery() {
                   alt={item.alt}
                   fill
                   sizes="(max-width: 1023px) 100vw, 55vw"
+                  data-image-parallax={index === 0 || index === 3 ? true : undefined}
                   className="object-cover"
                 />
               </div>

@@ -17,13 +17,34 @@ export function Hero() {
         return;
       }
 
-      gsap.from("[data-hero-reveal]", {
-        opacity: 0,
-        y: 24,
-        duration: 0.8,
-        stagger: 0.09,
-        ease: "power3.out"
-      });
+      const timeline = gsap.timeline();
+
+      timeline
+        .from("[data-hero-reveal]", {
+          opacity: 0,
+          y: 24,
+          duration: 0.8,
+          stagger: 0.09,
+          ease: "power3.out"
+        })
+        .fromTo("[data-hero-visual]", {
+          autoAlpha: 0,
+          clipPath: "inset(0 0 0 34%)"
+        }, {
+          autoAlpha: 1,
+          clipPath: "inset(0 0 0 0%)",
+          duration: 1.35,
+          ease: "power3.out"
+        }, "<0.18")
+        .fromTo("[data-hero-sweep]", {
+          autoAlpha: 0,
+          xPercent: -120
+        }, {
+          autoAlpha: 0.9,
+          xPercent: 215,
+          duration: 1.15,
+          ease: "power2.inOut"
+        }, "<0.16");
     },
     { scope: section, dependencies: [prefersReducedMotion], revertOnUpdate: true }
   );
@@ -72,7 +93,7 @@ export function Hero() {
           </div>
         </div>
       </div>
-      <div data-hero-reveal className="hero-visual pointer-events-none relative z-0 -mt-20 min-h-[390px] sm:-mt-28 sm:min-h-[520px] lg:absolute lg:-bottom-[12%] lg:-right-[12%] lg:-top-[8%] lg:mt-0 lg:w-[72%]">
+      <div data-hero-visual className="hero-visual pointer-events-none relative z-0 -mt-20 min-h-[390px] sm:-mt-28 sm:min-h-[520px] lg:absolute lg:-bottom-[12%] lg:-right-[12%] lg:-top-[8%] lg:mt-0 lg:w-[72%]">
         <Image
           src="./images/hero-blueprint-house.png"
           alt="Премиальный кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
@@ -81,6 +102,7 @@ export function Hero() {
           sizes="(max-width: 1023px) 100vw, 72vw"
           className="object-cover object-[62%_center]"
         />
+        <span data-hero-sweep className="hero-construction-sweep" aria-hidden="true" />
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, CheckCircle } from "@phosphor-icons/react";
+import Image from "next/image";
 import { type FormEvent, useState } from "react";
 
 type ContactValues = {
@@ -34,8 +35,18 @@ export function Contact() {
 
   return (
     <section id="contact" className="px-4 pb-20 pt-8 sm:px-6 lg:px-10 lg:pb-28">
-      <div className="mx-auto overflow-hidden rounded-[1.25rem] bg-[var(--graphite)] px-5 py-10 text-[#f8f6f0] sm:px-8 lg:max-w-[1440px] lg:px-14 lg:py-14" data-reveal>
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <div className="contact-panel relative mx-auto overflow-hidden rounded-[1.25rem] bg-[var(--graphite)] px-5 py-10 text-[#f8f6f0] sm:px-8 lg:max-w-[1440px] lg:px-14 lg:py-14" data-reveal>
+        <div className="architect-grid pointer-events-none absolute inset-0 opacity-20" />
+        <div className="contact-visual pointer-events-none absolute inset-y-0 right-0 hidden w-[55%] lg:block">
+          <Image
+            src="./images/project-birch.png"
+            alt=""
+            fill
+            sizes="55vw"
+            className="object-cover object-center"
+          />
+        </div>
+        <div className="relative z-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
             <p className="section-kicker text-[var(--terracotta)]">Следующий шаг</p>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(2.25rem,4.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.065em]">

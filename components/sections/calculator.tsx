@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, CheckCircle, HouseLine } from "@phosphor-icons/react";
-import { type FormEvent, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
 
 type EstimateForm = {
   area: number;
@@ -35,6 +35,36 @@ const finishMultiplier = {
   full: 1.27
 };
 
+function useAnimatedNumber(target: number, enabled: boolean, run: number) {
+  const [value, setValue] = useState(target);
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
+    const startedAt = performance.now();
+    const duration = 820;
+    let animationFrame = 0;
+
+    const updateValue = (now: number) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const easedProgress = 1 - (1 - progress) ** 4;
+      setValue(Math.round(target * easedProgress));
+
+      if (progress < 1) {
+        animationFrame = window.requestAnimationFrame(updateValue);
+      }
+    };
+
+    animationFrame = window.requestAnimationFrame(updateValue);
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [enabled, run, target]);
+
+  return value;
+}
+
 export function Calculator() {
   const [form, setForm] = useState<EstimateForm>(initialEstimate);
   const [showEstimate, setShowEstimate] = useState(false);
@@ -42,6 +72,7 @@ export function Calculator() {
   const [lead, setLead] = useState<LeadForm>(initialLead);
   const [leadErrors, setLeadErrors] = useState<Partial<LeadForm>>({});
   const [isSent, setIsSent] = useState(false);
+  const [estimateRun, setEstimateRun] = useState(0);
 
   const estimate = useMemo(() => {
     const basePerMeter = form.floors === "2" ? 0.086 : 0.081;
@@ -57,6 +88,8 @@ export function Calculator() {
       high: Math.max(low + 2, Math.round(low * 1.18))
     };
   }, [form]);
+  const animatedLow = useAnimatedNumber(estimate.low, showEstimate, estimateRun);
+  const animatedHigh = useAnimatedNumber(estimate.high, showEstimate, estimateRun);
 
   const calculate = () => {
     if (form.area < 80 || form.area > 650) {
@@ -68,6 +101,7 @@ export function Calculator() {
     setAreaError("");
     setShowEstimate(true);
     setIsSent(false);
+    setEstimateRun((current) => current + 1);
   };
 
   const submitLead = (event: FormEvent<HTMLFormElement>) => {
@@ -180,8 +214,8 @@ export function Calculator() {
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">
                     Предварительный ориентир
                   </p>
-                  <p className="mt-2 text-[clamp(2rem,4vw,3.4rem)] font-extrabold leading-none tracking-[-0.07em] text-[var(--brick-deep)]">
-                    {estimate.low.toLocaleString("ru-RU")}-{estimate.high.toLocaleString("ru-RU")} млн ₽
+                  <p className="estimate-number mt-2 text-[clamp(2rem,4vw,3.4rem)] font-extrabold leading-none tracking-[-0.07em] text-[var(--brick-deep)]">
+                    {animatedLow.toLocaleString("ru-RU")}-{animatedHigh.toLocaleString("ru-RU")} млн ₽
                   </p>
                 </div>
                 <HouseLine size={46} weight="thin" className="text-[var(--graphite-soft)]" aria-hidden="true" />

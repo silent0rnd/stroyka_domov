@@ -15,7 +15,7 @@ export function ConstructionRoute() {
         </div>
         <ol className="relative grid gap-1">
           {constructionSteps.map((step, index) => (
-            <li key={step} className="relative flex gap-5 py-5">
+            <li key={step.title} data-route-step className="route-step relative flex gap-5 py-5">
               {index < constructionSteps.length - 1 ? (
                 <span className="absolute bottom-[-1.5rem] left-[1.12rem] top-14 w-px bg-[var(--line)]" aria-hidden="true">
                   <span data-route-line className="route-line block h-full w-full bg-[var(--brick)]" />
@@ -25,7 +25,8 @@ export function ConstructionRoute() {
                 <Icon name="check" size={17} weight="bold" />
               </span>
               <div className="border-b border-[var(--line)] pb-5 pt-1.5 last:border-none">
-                <h3 className="text-lg font-extrabold tracking-[-0.035em] text-[var(--graphite)]">{step}</h3>
+                <h3 className="text-lg font-extrabold tracking-[-0.035em] text-[var(--graphite)]">{step.title}</h3>
+                <p className="route-result mt-2 max-w-md text-sm leading-6 text-[var(--ink-soft)]">{step.result}</p>
               </div>
             </li>
           ))}

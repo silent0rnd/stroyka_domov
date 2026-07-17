@@ -12,6 +12,7 @@ export function MaterialStory() {
             alt="Архитектурное решение кирпичного дома с внутренним двором"
             fill
             sizes="(max-width: 1023px) 100vw, 45vw"
+            data-image-parallax
             className="object-cover"
           />
         </div>
