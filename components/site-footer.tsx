@@ -25,9 +25,21 @@ export function SiteFooter() {
             Вопросы <Icon name="arrow-up-right" size={15} weight="bold" />
           </a>
           <a href="#" className="hover:text-[var(--brick-deep)]">Политика конфиденциальности</a>
-          <span className="w-full text-[0.76rem] font-medium text-[var(--ink-soft)] md:text-right">
-            {new Date().getFullYear()} ДомКирпич
-          </span>
+          <div className="flex w-full flex-wrap items-center gap-x-3 gap-y-1 text-[0.72rem] font-medium text-[var(--ink-soft)] md:justify-end">
+            <span>{new Date().getFullYear()} ДомКирпич</span>
+            <span aria-hidden="true" className="hidden h-3 w-px bg-[var(--line-strong)] sm:block" />
+            <span>
+              Сайт разработан{" "}
+              <a
+                href="https://naklikay.ru/"
+                target="_blank"
+                rel="noopener"
+                className="font-bold text-[var(--graphite)] underline decoration-[var(--brick)] decoration-1 underline-offset-4 transition-colors hover:text-[var(--brick-deep)]"
+              >
+                Максимом Мирошниковым
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </footer>
