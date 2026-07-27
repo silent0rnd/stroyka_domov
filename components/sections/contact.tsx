@@ -48,13 +48,13 @@ export function Contact() {
         </div>
 
         <span className="contact-stage tech-sm" aria-hidden="true">
-          Лист 12 · Передача объекта
+          Лист 13 · Передача объекта
         </span>
 
         <div className="relative z-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
             <p className="sheet-head__meta tech">
-              <span className="sheet-head__code contact-code">А-12</span>
+              <span className="sheet-head__code contact-code">А-13</span>
               <span className="sheet-head__rule contact-rule" aria-hidden="true" />
               <span className="text-[var(--terracotta)]">Следующий шаг</span>
             </p>

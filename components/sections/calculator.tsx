@@ -141,7 +141,7 @@ export function Calculator() {
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
         <div className="lg:pt-4">
           <SectionHead
-            sheet="А-07"
+            sheet="А-08"
             kicker="Предварительный расчёт"
             title="Предварительный расчет без лишних звонков."
             lead="Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом."

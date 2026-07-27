@@ -12,7 +12,7 @@ export function Faq() {
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHead
-            sheet="А-11"
+            sheet="А-12"
             kicker="Примечания к листам"
             title="Отвечаем на важные вопросы заранее."
             lead="Если не нашли свой вопрос, оставьте заявку. Поможем разобраться в спокойном разговоре."

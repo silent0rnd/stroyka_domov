@@ -43,7 +43,7 @@ export function ConstructionRoute() {
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHead
-            sheet="А-06"
+            sheet="А-07"
             kicker="Этапность работ"
             title="Строим по маршруту, который видно целиком."
             lead="От первой встречи до передачи дома каждый этап имеет свою задачу и понятный результат."

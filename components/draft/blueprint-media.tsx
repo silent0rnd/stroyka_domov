@@ -22,11 +22,6 @@ type BlueprintMediaProps = {
    * manual — вайпом управляет родительская секция (hero, блок материала).
    */
   motion?: "auto" | "manual";
-  /**
-   * wipe — фотография проявляется слева направо, как на hero-кадре.
-   * courses — дом выкладывается снизу вверх, ряд за рядом.
-   */
-  reveal?: "wipe" | "courses";
 };
 
 /**
@@ -46,8 +41,7 @@ export function BlueprintMedia({
   className = "",
   imageClassName = "object-cover",
   children,
-  motion = "auto",
-  reveal = "wipe"
+  motion = "auto"
 }: BlueprintMediaProps) {
   const frame = useRef<HTMLDivElement>(null);
 
@@ -73,7 +67,7 @@ export function BlueprintMedia({
       ref={frame}
       data-draft={motion === "auto" ? "media" : undefined}
       data-bp-media=""
-      className={`bp-media bp-media--${reveal} ${ticks ? "corner-ticks" : ""} ${className}`}
+      className={`bp-media ${ticks ? "corner-ticks" : ""} ${className}`}
       onPointerMove={trackPointer}
       onPointerLeave={releasePointer}
     >
@@ -88,7 +82,6 @@ export function BlueprintMedia({
       />
       <span className="bp-media__wire" aria-hidden="true">
         <Image src={src} alt="" fill sizes={sizes} className={`bp-media__ghost ${imageClassName}`} />
-        {reveal === "courses" ? <span className="bp-media__courses hatch-brick" /> : null}
       </span>
       <span className="bp-media__edge" aria-hidden="true" />
       <span className="bp-media__lens" aria-hidden="true" />

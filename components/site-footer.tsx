@@ -24,7 +24,7 @@ export function SiteFooter() {
             { key: "Регион", value: "Москва и область" },
             { key: "Телефон", value: "+7 (495) 000-00-00" },
             { key: "Почта", value: "hello@domkirpich.ru" },
-            { key: "Лист", value: "12 / 12", accent: true },
+            { key: "Лист", value: "13 / 13", accent: true },
             { key: "Адрес офиса", value: "Добавьте перед запуском", span: 2 },
             { key: "Стадия", value: "Приём заявок" },
             { key: "Разработал", value: "Максим Мирошников", span: 2 },

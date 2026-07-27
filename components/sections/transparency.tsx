@@ -13,7 +13,7 @@ export function Transparency() {
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
         <div data-draw-trigger>
           <SectionHead
-            sheet="А-09"
+            sheet="А-10"
             kicker="Проверяемые обязательства"
             title="Прозрачность, которую можно проверить в процессе."
             lead="Договоренности должны быть видны не только на старте. Поэтому держим процесс стройки понятным на каждом этапе."

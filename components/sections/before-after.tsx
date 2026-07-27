@@ -40,7 +40,7 @@ export function BeforeAfter() {
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <SectionHead
-            sheet="А-10"
+            sheet="А-11"
             kicker="Проект / исполнение"
             title="От архитектурной идеи к готовому фасаду."
             lead="Сравните образ проекта и вариант исполнения. Перемещайте разделитель мышью, касанием или клавишами."

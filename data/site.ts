@@ -12,10 +12,11 @@ export type Project = {
 
 /** Коды соответствуют номерам листов, которые показывают сами секции. */
 export const navItems = [
-  { href: "#projects", label: "Проекты", sheet: "А-04" },
-  { href: "#process", label: "Как строим", sheet: "А-06" },
-  { href: "#calculator", label: "Расчет", sheet: "А-07" },
-  { href: "#faq", label: "Вопросы", sheet: "А-11" }
+  { href: "#masonry", label: "Кладка", sheet: "А-04" },
+  { href: "#projects", label: "Проекты", sheet: "А-05" },
+  { href: "#process", label: "Как строим", sheet: "А-07" },
+  { href: "#calculator", label: "Расчет", sheet: "А-08" },
+  { href: "#faq", label: "Вопросы", sheet: "А-12" }
 ];
 
 export const benefits = [
@@ -44,6 +45,18 @@ export const benefits = [
     title: "Персональный менеджер",
     text: "Один специалист держит в фокусе вопросы, решения и статус работ на каждом этапе."
   }
+];
+
+/**
+ * Параметры кладки для листа А-04.
+ * ЗАГОТОВКА: замените на реальные значения перед запуском —
+ * как телефон и адрес офиса в подвале.
+ */
+export const wallSpecs = [
+  { key: "Кирпич", value: "250×120×65 мм" },
+  { key: "Перевязка", value: "Ложковая" },
+  { key: "Раствор", value: "М-100" },
+  { key: "Толщина стены", value: "380 мм" }
 ];
 
 export const materialReasons = [

@@ -47,7 +47,7 @@ export function Projects() {
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHead
-            sheet="А-04"
+            sheet="А-05"
             kicker="Концептуальные проекты"
             title="Пространства с характером будущего дома."
             lead="Это варианты для вдохновения и обсуждения. Каждый проект адаптируется под участок и привычки вашей семьи."

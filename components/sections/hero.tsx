@@ -271,7 +271,7 @@ export function Hero() {
                   { key: "Стадия", value: "Рабочий проект" },
                   { key: "Масштаб", value: "1:100" },
                   { key: "Лист", value: "01", accent: true },
-                  { key: "Листов", value: "12" }
+                  { key: "Листов", value: "13" }
                 ]}
               />
             </div>

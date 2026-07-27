@@ -21,7 +21,7 @@ export function Scenarios() {
 
       <div className="mx-auto max-w-[1440px]">
         <SectionHead
-          sheet="А-08"
+          sheet="А-09"
           kicker="Сценарии семьи"
           title="Когда важен не просто дом, а уверенность в каждом решении."
           lead="Мы хорошо понимаем, какие вопросы появляются у семей до первого шага к строительству."

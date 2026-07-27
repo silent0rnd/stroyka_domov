@@ -340,28 +340,6 @@ a {
     var(--grid-fine) var(--grid-fine);
 }
 
-/* кладка: дом набирается рядами снизу вверх */
-.bp-media--courses .bp-media__wire {
-  clip-path: inset(0 0 var(--wipe) 0);
-}
-
-.bp-media__courses {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.55;
-}
-
-.bp-media--courses .bp-media__edge {
-  top: auto;
-  right: 0;
-  bottom: var(--wipe);
-  left: 0;
-  height: var(--lw-bold);
-  width: auto;
-  margin: 0 0 calc(var(--lw-bold) * -0.5) 0;
-}
-
 /* после проявления слой больше не нужен */
 .bp-media[data-drawn="true"] .bp-media__wire {
   display: none;
@@ -857,6 +835,145 @@ a {
 }
 
 /* ============================================================
+   КЛАДКА: стена собирается кирпич за кирпичом
+   ============================================================ */
+
+.wall-frame {
+  position: relative;
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--surface-high);
+  padding: 0.7rem;
+  box-shadow: 0 26px 64px rgb(42 37 31 / 12%);
+}
+
+.wall {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+/* контуры будущих кирпичей — тот самый чертёж под кладкой */
+.wall__draft {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.wall__draft rect {
+  fill: none;
+  stroke: rgb(48 51 49 / 30%);
+  stroke-width: 1;
+}
+
+/* Тон приглушённый и узкий по разбросу: яркая пёстрая кладка выбивалась
+   бы из бумажной палитры сайта. */
+.wall__brick {
+  position: absolute;
+  /* внутренняя рамка цвета раствора отделяет кирпич от соседа */
+  box-shadow: inset 0 0 0 var(--lw-main) rgb(232 228 219 / 40%);
+  background-color: hsl(
+    calc(9deg + var(--tone, 0.5) * 8deg)
+    calc(27% + var(--tone, 0.5) * 11%)
+    calc(39% + var(--tone, 0.5) * 10%)
+  );
+}
+
+/* перемычка над проёмом: кирпич на ребро, тон чуть глубже */
+.wall__brick--soldier {
+  background-color: hsl(
+    calc(9deg + var(--tone, 0.5) * 6deg)
+    calc(29% + var(--tone, 0.5) * 9%)
+    calc(33% + var(--tone, 0.5) * 8%)
+  );
+}
+
+.wall__opening {
+  position: absolute;
+  z-index: 2;
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--paper);
+  background-image:
+    linear-gradient(to right, rgb(48 51 49 / 9%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(48 51 49 / 9%) var(--lw-main), transparent var(--lw-main));
+  background-size: var(--grid-fine) var(--grid-fine);
+}
+
+.wall__opening-label {
+  position: absolute;
+  bottom: 0.45rem;
+  left: 50%;
+  color: var(--ink-faint);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* линия текущего ряда — та же деталь, что кромка проявления на фото */
+.wall__course {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  height: var(--lw-bold);
+  margin-bottom: calc(var(--lw-bold) * -0.5);
+  background: var(--brick);
+  box-shadow: 0 0 18px 2px rgb(168 69 48 / 45%);
+  pointer-events: none;
+}
+
+.wall-spec {
+  margin-top: 2rem;
+  border-top: var(--lw-bold) solid var(--line-ink);
+}
+
+.wall-spec__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: var(--lw-main) solid var(--line);
+  padding: 0.6rem 0;
+}
+
+.wall-spec__value {
+  color: var(--graphite);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.wall-gauge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  margin-top: 1.6rem;
+}
+
+.wall-gauge__value {
+  margin-top: 0.35rem;
+  color: var(--brick-deep);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.wall-gauge__total {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wall__brick {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .wall__course {
+    display: none;
+  }
+}
+
+/* ============================================================
    БЛОК МАТЕРИАЛА
    ============================================================ */
 
@@ -871,17 +988,6 @@ a {
 .material-media {
   height: 100%;
   width: 100%;
-}
-
-.material-course-tag {
-  position: absolute;
-  bottom: 0.9rem;
-  left: 0.9rem;
-  z-index: 6;
-  border: var(--lw-thin) solid rgb(255 255 255 / 26%);
-  background: rgb(33 35 34 / 68%);
-  padding: 0.36rem 0.55rem;
-  color: #f9f8f4;
 }
 
 .material-reason {

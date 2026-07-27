@@ -1,5 +1,6 @@
 import { BeforeAfter } from "@/components/sections/before-after";
 import { Benefits } from "@/components/sections/benefits";
+import { BrickWall } from "@/components/sections/brick-wall";
 import { Calculator } from "@/components/sections/calculator";
 import { Contact } from "@/components/sections/contact";
 import { ConstructionRoute } from "@/components/sections/construction-route";
@@ -22,6 +23,7 @@ export default function Home() {
         <Hero />
         <Benefits />
         <MaterialStory />
+        <BrickWall />
         <Projects />
         <Gallery />
         <ConstructionRoute />
