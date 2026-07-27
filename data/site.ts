@@ -10,11 +10,12 @@ export type Project = {
   price: string;
 };
 
+/** Коды соответствуют номерам листов, которые показывают сами секции. */
 export const navItems = [
-  { href: "#projects", label: "Проекты" },
-  { href: "#process", label: "Как строим" },
-  { href: "#calculator", label: "Расчет" },
-  { href: "#faq", label: "Вопросы" }
+  { href: "#projects", label: "Проекты", sheet: "А-04" },
+  { href: "#process", label: "Как строим", sheet: "А-06" },
+  { href: "#calculator", label: "Расчет", sheet: "А-07" },
+  { href: "#faq", label: "Вопросы", sheet: "А-11" }
 ];
 
 export const benefits = [

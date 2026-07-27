@@ -1,35 +1,49 @@
-import Image from "next/image";
+import { BlueprintMedia } from "@/components/draft/blueprint-media";
+import { SectionHead } from "@/components/draft/section-head";
 import { galleryItems } from "@/data/site";
 
 const gridSizes = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
 const aspectRatios = ["aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[16/10]"];
+/** Узлы, к которым ведут выноски на каждом кадре. */
+const notes = ["Внутренний двор", "Пластика фасада", "Свет и посадка", "Переход материала"];
 
 export function Gallery() {
   return (
-    <section className="px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
-      <div className="mx-auto max-w-[1440px]" data-reveal>
-        <div className="max-w-2xl">
-          <h2 className="text-[clamp(2rem,4.2vw,3.7rem)] font-extrabold leading-[1.02] tracking-[-0.06em] text-[var(--graphite)]">
-            Архитектурные решения для вашего будущего дома.
-          </h2>
-          <p className="mt-5 text-[0.98rem] leading-7 text-[var(--ink-soft)]">
-            Разные пропорции, свет и посадка на участок помогают найти образ, который будет близок именно вам.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-5 lg:grid-cols-12">
+    <section className="draft-sheet px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+      <div className="sheet-gutter" aria-hidden="true">
+        <span className="sheet-code tech-sm">Архитектурные решения</span>
+      </div>
+
+      <div className="mx-auto max-w-[1440px]">
+        <SectionHead
+          sheet="А-05"
+          kicker="Развёртки и виды"
+          title="Архитектурные решения для вашего будущего дома."
+          lead="Разные пропорции, свет и посадка на участок помогают найти образ, который будет близок именно вам."
+          className="max-w-2xl"
+        />
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-12">
           {galleryItems.map((item, index) => (
-            <figure key={item.title} className={gridSizes[index]}>
-              <div className={`image-frame relative ${aspectRatios[index]}`}>
-                <Image
-                  src={item.image}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 1023px) 100vw, 55vw"
-                  data-image-parallax={index === 0 || index === 3 ? true : undefined}
-                  className="object-cover"
-                />
-              </div>
-              <figcaption className="mt-3 text-sm font-bold text-[var(--graphite)]">{item.title}</figcaption>
+            <figure key={item.title} className={`gallery-item ${gridSizes[index]}`}>
+              <BlueprintMedia
+                src={item.image}
+                alt={item.alt}
+                sizes="(max-width: 1023px) 100vw, 55vw"
+                parallax={index === 0 || index === 3}
+                className={aspectRatios[index]}
+              >
+                <span className="gallery-note">
+                  <span className="callout__dot" />
+                  <span className="callout__leader" />
+                  <span className="callout__label tech-sm">{notes[index]}</span>
+                </span>
+              </BlueprintMedia>
+
+              <figcaption className="gallery-caption">
+                <span className="num gallery-caption__index">{String(index + 1).padStart(2, "0")}</span>
+                <span>{item.title}</span>
+              </figcaption>
             </figure>
           ))}
         </div>

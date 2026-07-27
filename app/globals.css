@@ -1,21 +1,48 @@
 @import "tailwindcss";
 
 :root {
+  /* --- бумага --- */
   --paper: #eeece7;
   --paper-strong: #e4e1da;
+  --paper-deep: #dbd7ce;
   --surface: #f7f6f2;
+  --surface-high: #fbfaf7;
+
+  /* --- тушь --- */
   --ink: #252827;
   --ink-soft: #646a65;
+  --ink-faint: #8d928d;
   --graphite: #303331;
   --graphite-soft: #474b47;
+
+  /* --- кирпич: рампа материализации --- */
   --brick: #a84530;
   --brick-deep: #7e3023;
+  --brick-bright: #c25532;
   --terracotta: #c2694f;
+  --brick-wash: rgb(168 69 48 / 9%);
+
+  /* --- толщины линий (тонкая / основная / утолщённая) --- */
+  --lw-thin: 0.5px;
+  --lw-main: 1px;
+  --lw-bold: 2px;
   --line: rgb(48 51 49 / 14%);
   --line-strong: rgb(48 51 49 / 22%);
+  --line-ink: rgb(48 51 49 / 42%);
+
+  /* --- чертёжный модуль --- */
+  --grid-fine: 8px;
+  --grid-major: 40px;
+
+  /* --- глобальный прогресс стройки, 0 → 1 (пишется из page-motion) --- */
+  --build: 0;
+
   --radius-lg: 1.1rem;
   --radius-md: 0.85rem;
   --shadow: 0 24px 70px rgb(42 37 31 / 11%);
+
+  --font-sans: "Manrope Variable", Manrope, Arial, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 }
 
 * {
@@ -29,10 +56,11 @@ html {
 
 body {
   min-width: 320px;
-  overflow-x: hidden;
+  /* clip, а не hidden: hidden ломает position:sticky и пиннинг ScrollTrigger */
+  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Manrope Variable", Manrope, Arial, sans-serif;
+  font-family: var(--font-sans);
   font-optical-sizing: auto;
   text-rendering: optimizeLegibility;
 }
@@ -84,11 +112,837 @@ a {
   isolation: isolate;
 }
 
+/* ============================================================
+   ЧЕРТЁЖНАЯ СИСТЕМА
+   ============================================================ */
+
+/* --- технические подписи: всё, что «написано рейсфедером» --- */
+.tech {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.tech-sm {
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* --- зерно кальки: убирает ощущение плоского градиента --- */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* --- сетка чертёжной доски: мелкий модуль + крупный --- */
 .architect-grid {
   background-image:
-    linear-gradient(to right, rgb(48 51 49 / 5%) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(48 51 49 / 5%) 1px, transparent 1px);
-  background-size: 34px 34px;
+    linear-gradient(to right, rgb(48 51 49 / 11%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(48 51 49 / 11%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to right, rgb(48 51 49 / 5%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(48 51 49 / 5%) var(--lw-main), transparent var(--lw-main));
+  background-size:
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major),
+    var(--grid-fine) var(--grid-fine),
+    var(--grid-fine) var(--grid-fine);
+}
+
+/* --- кирпичная кладка (перевязка) как штриховка --- */
+.hatch-brick {
+  --mortar: rgb(48 51 49 / 16%);
+  background-image:
+    linear-gradient(transparent 0 calc(100% - var(--lw-main)), var(--mortar) 0),
+    linear-gradient(90deg, var(--mortar) 0 var(--lw-main), transparent 0),
+    linear-gradient(90deg, var(--mortar) 0 var(--lw-main), transparent 0);
+  background-size: 100% 14px, 32px 28px, 32px 28px;
+  background-position: 0 0, 0 0, 16px 14px;
+}
+
+/* ============================================================
+   ЛИСТ: обрамление секции
+   ============================================================ */
+
+.draft-sheet {
+  position: relative;
+}
+
+.sheet-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  width: 2.6rem;
+  border-right: var(--lw-thin) solid var(--line);
+  pointer-events: none;
+}
+
+.sheet-code {
+  position: sticky;
+  top: 8rem;
+  display: block;
+  color: var(--ink-faint);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.sheet-code b {
+  color: var(--brick-deep);
+  font-weight: 700;
+}
+
+@media (min-width: 1280px) {
+  .sheet-gutter {
+    display: block;
+  }
+}
+
+/* угловые засечки — как приводочные метки на листе */
+.corner-ticks::before,
+.corner-ticks::after {
+  position: absolute;
+  width: 0.85rem;
+  height: 0.85rem;
+  content: "";
+  pointer-events: none;
+}
+
+.corner-ticks::before {
+  top: 0;
+  left: 0;
+  border-top: var(--lw-main) solid var(--line-ink);
+  border-left: var(--lw-main) solid var(--line-ink);
+}
+
+.corner-ticks::after {
+  right: 0;
+  bottom: 0;
+  border-right: var(--lw-main) solid var(--line-ink);
+  border-bottom: var(--lw-main) solid var(--line-ink);
+}
+
+/* ============================================================
+   ШТАМП (title block)
+   ============================================================ */
+
+.title-block {
+  display: grid;
+  border: var(--lw-main) solid var(--line-ink);
+  background: rgb(251 250 247 / 92%);
+  font-family: var(--font-mono);
+}
+
+.title-block__cell {
+  display: grid;
+  align-content: center;
+  gap: 0.22rem;
+  border-right: var(--lw-thin) solid var(--line-strong);
+  border-bottom: var(--lw-thin) solid var(--line-strong);
+  padding: 0.42rem 0.6rem;
+  min-width: 0;
+}
+
+.title-block__key {
+  color: var(--ink-faint);
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.title-block__val {
+  overflow: hidden;
+  color: var(--graphite);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.title-block__val--brick {
+  color: var(--brick-deep);
+}
+
+/* ============================================================
+   МЕДИА: рождение фотографии из чертежа
+   ============================================================ */
+
+.bp-media {
+  --wipe: 0%;
+  --lens: 0;
+  --px: 50%;
+  --py: 50%;
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+.bp-media img {
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bp-media:hover img:not([data-image-parallax]) {
+  transform: scale(1.03);
+}
+
+/* каркасный слой: обесцвеченная копия кадра под чертёжной сеткой.
+   Копия дешевле и предсказуемее backdrop-filter — файл уже в кэше. */
+.bp-media__wire {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: inset(0 0 0 var(--wipe));
+  background-color: var(--paper);
+}
+
+.bp-media__ghost {
+  filter: grayscale(1) brightness(1.3) contrast(0.62);
+  opacity: 0.82;
+}
+
+/* сетка чертёжной доски поверх обесцвеченного кадра */
+.bp-media__wire::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image:
+    linear-gradient(to right, rgb(48 51 49 / 26%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(48 51 49 / 26%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to right, rgb(48 51 49 / 11%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(48 51 49 / 11%) var(--lw-main), transparent var(--lw-main));
+  background-size:
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major),
+    var(--grid-fine) var(--grid-fine),
+    var(--grid-fine) var(--grid-fine);
+}
+
+/* кладка: дом набирается рядами снизу вверх */
+.bp-media--courses .bp-media__wire {
+  clip-path: inset(0 0 var(--wipe) 0);
+}
+
+.bp-media__courses {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.55;
+}
+
+.bp-media--courses .bp-media__edge {
+  top: auto;
+  right: 0;
+  bottom: var(--wipe);
+  left: 0;
+  height: var(--lw-bold);
+  width: auto;
+  margin: 0 0 calc(var(--lw-bold) * -0.5) 0;
+}
+
+/* после проявления слой больше не нужен */
+.bp-media[data-drawn="true"] .bp-media__wire {
+  display: none;
+}
+
+/* линия построения — кромка, за которой чертёж становится домом */
+.bp-media__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  left: var(--wipe);
+  width: var(--lw-bold);
+  margin-left: calc(var(--lw-bold) * -0.5);
+  background: var(--brick);
+  box-shadow: 0 0 18px 2px rgb(168 69 48 / 45%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.bp-media[data-drawing="true"] .bp-media__edge {
+  opacity: 1;
+}
+
+/* локальное проявление сетки под курсором — «доска под рукой» */
+.bp-media__lens {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: var(--lens);
+  transition: opacity 380ms ease;
+  background-image:
+    linear-gradient(to right, rgb(248 246 240 / 42%) var(--lw-main), transparent var(--lw-main)),
+    linear-gradient(to bottom, rgb(248 246 240 / 42%) var(--lw-main), transparent var(--lw-main));
+  background-size: var(--grid-major) var(--grid-major);
+  -webkit-mask-image: radial-gradient(circle 150px at var(--px) var(--py), #000 0%, rgb(0 0 0 / 55%) 45%, transparent 78%);
+  mask-image: radial-gradient(circle 150px at var(--px) var(--py), #000 0%, rgb(0 0 0 / 55%) 45%, transparent 78%);
+}
+
+/* перекрестье визира внутри линзы */
+.bp-media__cross {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: var(--lens);
+  transition: opacity 380ms ease;
+}
+
+.bp-media__cross::before,
+.bp-media__cross::after {
+  position: absolute;
+  content: "";
+  background: rgb(248 246 240 / 55%);
+}
+
+.bp-media__cross::before {
+  top: var(--py);
+  right: 0;
+  left: 0;
+  height: var(--lw-main);
+}
+
+.bp-media__cross::after {
+  top: 0;
+  bottom: 0;
+  left: var(--px);
+  width: var(--lw-main);
+}
+
+/* ============================================================
+   РАЗМЕРНЫЕ ЛИНИИ
+   ============================================================ */
+
+.dim {
+  --serif: 0;
+  position: relative;
+  display: flex;
+  height: 1.5rem;
+  align-items: center;
+}
+
+.dim::before,
+.dim::after {
+  position: absolute;
+  top: 50%;
+  width: var(--lw-main);
+  height: 0.62rem;
+  background: var(--line-ink);
+  content: "";
+  opacity: var(--serif);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.dim::before {
+  left: 0;
+}
+
+.dim::after {
+  right: 0;
+}
+
+.dim__bar {
+  height: var(--lw-main);
+  width: 100%;
+  background: var(--line-ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.dim__val {
+  position: absolute;
+  left: 50%;
+  padding: 0 0.55rem;
+  background: var(--paper);
+  color: var(--ink-faint);
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+.dim__val--start {
+  left: 0.7rem;
+  transform: none;
+}
+
+.dim-v {
+  --serif: 0;
+  position: relative;
+  display: flex;
+  width: 1.5rem;
+  justify-content: center;
+}
+
+.dim-v__bar {
+  height: 100%;
+  width: var(--lw-main);
+  background: var(--line-ink);
+  transform: scaleY(0);
+  transform-origin: center top;
+}
+
+.dim-v__val {
+  position: absolute;
+  top: 50%;
+  padding: 0.5rem 0;
+  background: var(--paper);
+  color: var(--ink-faint);
+  opacity: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+}
+
+/* ============================================================
+   ШАПКА СЕКЦИИ
+   ============================================================ */
+
+.sheet-head__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink-faint);
+}
+
+.sheet-head__code {
+  border: var(--lw-main) solid var(--line-ink);
+  padding: 0.32rem 0.45rem;
+  color: var(--brick-deep);
+  font-weight: 700;
+}
+
+.sheet-head__rule {
+  height: var(--lw-main);
+  width: 2.2rem;
+  flex: none;
+  background: var(--line-ink);
+}
+
+.sheet-code__sep {
+  margin: 0.55rem 0;
+  display: block;
+  color: var(--line-ink);
+}
+
+/* ============================================================
+   ШАПКА: кромка чертёжного листа
+   ============================================================ */
+
+.header-rule {
+  position: relative;
+  height: 0.4rem;
+  border-bottom: var(--lw-thin) solid var(--line);
+  background-image: repeating-linear-gradient(90deg, var(--line-strong) 0 var(--lw-main), transparent var(--lw-main) 20px);
+  background-position: 0 bottom;
+  background-size: 100% 55%;
+  background-repeat: repeat-x;
+}
+
+/* мерная полоса: сколько «построено» на странице */
+.header-rule__progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  background: var(--brick);
+  transform: scaleX(var(--build, 0));
+  transform-origin: left center;
+}
+
+.header-mark {
+  display: grid;
+  height: 2rem;
+  width: 2rem;
+  position: relative;
+  place-items: center;
+  background: var(--brick);
+  color: #f8f6f0;
+  font-size: 0.85rem;
+  font-weight: 900;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .header-mark {
+  transform: rotate(-6deg);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  transition: color 200ms ease;
+}
+
+.nav-link:hover {
+  color: var(--brick-deep);
+}
+
+.nav-link__code {
+  color: var(--ink-faint);
+  transition: color 200ms ease;
+}
+
+.nav-link:hover .nav-link__code {
+  color: var(--brick);
+}
+
+/* ============================================================
+   ВЕДОМОСТЬ (преимущества)
+   ============================================================ */
+
+.spec {
+  border-top: var(--lw-bold) solid var(--line-ink);
+}
+
+.spec__head,
+.spec__row {
+  display: grid;
+  align-items: center;
+  gap: 0.35rem 1.5rem;
+  grid-template-columns: 3rem minmax(0, 16rem) minmax(0, 1fr) 2.6rem;
+  border-bottom: var(--lw-main) solid var(--line);
+}
+
+.spec__head {
+  padding: 0.65rem 1rem;
+  color: var(--ink-faint);
+}
+
+.spec__row {
+  position: relative;
+  padding: 1.4rem 1rem;
+  transition: background-color 320ms ease;
+}
+
+/* при наведении слева нарастает кирпичная отчёркивающая линия */
+.spec__row::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--lw-bold);
+  background: var(--brick);
+  content: "";
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spec__row:hover,
+.spec__row:focus-within {
+  background: var(--surface);
+}
+
+.spec__row:hover::before,
+.spec__row:focus-within::before {
+  transform: scaleY(1);
+}
+
+.spec__index {
+  align-self: start;
+  color: var(--brick-deep);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.spec__title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--graphite);
+}
+
+.spec__text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.spec__icon {
+  color: var(--brick);
+  justify-self: end;
+  opacity: 0.55;
+  transition: opacity 320ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spec__row:hover .spec__icon {
+  opacity: 1;
+  transform: translateX(-0.25rem);
+}
+
+@media (max-width: 767px) {
+  .spec__head {
+    display: none;
+  }
+
+  .spec__row {
+    grid-template-columns: 2.5rem minmax(0, 1fr) 2rem;
+    padding: 1.1rem 0.75rem;
+  }
+
+  .spec__text {
+    grid-column: 2 / -1;
+  }
+}
+
+/* ============================================================
+   ПРОЕКТЫ: карточка-лист
+   ============================================================ */
+
+.rail-button {
+  display: grid;
+  height: 2.75rem;
+  width: 2.75rem;
+  place-items: center;
+  border: var(--lw-main) solid var(--line-strong);
+  color: var(--graphite);
+  transition: border-color 200ms ease, color 200ms ease, transform 200ms ease;
+}
+
+.rail-button:hover {
+  border-color: var(--brick);
+  color: var(--brick-deep);
+}
+
+.rail-button:active {
+  transform: scale(0.97);
+}
+
+.project-card {
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--surface-high);
+  transition: box-shadow 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover {
+  box-shadow: 0 24px 58px rgb(42 37 31 / 13%);
+  transform: translateY(-3px);
+}
+
+.project-card__body {
+  flex: 1;
+  border-top: var(--lw-main) solid var(--line-ink);
+  padding: 1.05rem 1.1rem 1.15rem;
+}
+
+.project-card__stamp {
+  border: 0;
+  border-top: var(--lw-main) solid var(--line-ink);
+  background: transparent;
+}
+
+.project-card__stamp .title-block__cell:nth-child(2n) {
+  border-right: 0;
+}
+
+.project-card__stamp .title-block__cell:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.project-tag {
+  position: absolute;
+  z-index: 6;
+  border: var(--lw-thin) solid rgb(255 255 255 / 26%);
+  background: rgb(33 35 34 / 62%);
+  padding: 0.34rem 0.5rem;
+  color: #f9f8f4;
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition: opacity 420ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-tag--index {
+  top: 0.85rem;
+  left: 0.85rem;
+}
+
+.project-tag--scale {
+  right: 0.85rem;
+  bottom: 0.85rem;
+}
+
+.project-card:hover .project-tag,
+.project-card:focus-within .project-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   ГАЛЕРЕЯ
+   ============================================================ */
+
+.gallery-item .bp-media {
+  border: var(--lw-main) solid var(--line-ink);
+}
+
+.gallery-note {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translate(-0.6rem, -50%);
+  transition: opacity 420ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.gallery-item:hover .gallery-note {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.gallery-caption {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  border-top: var(--lw-main) solid var(--line);
+  margin-top: 0.85rem;
+  padding-top: 0.7rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--graphite);
+}
+
+.gallery-caption__index {
+  color: var(--brick-deep);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+/* ============================================================
+   ЧЕК-ЛИСТ С ПРОРИСОВКОЙ
+   ============================================================ */
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  border-top: var(--lw-main) solid var(--line);
+  padding: 0.85rem 0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--graphite);
+}
+
+.check-row__mark {
+  flex: none;
+  margin-top: 0.1rem;
+  color: var(--brick);
+}
+
+/* ============================================================
+   БЛОК МАТЕРИАЛА
+   ============================================================ */
+
+.material-frame {
+  position: relative;
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--surface-high);
+  padding: 0.55rem;
+  box-shadow: 0 26px 64px rgb(42 37 31 / 12%);
+}
+
+.material-media {
+  height: 100%;
+  width: 100%;
+}
+
+.material-course-tag {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 0.9rem;
+  z-index: 6;
+  border: var(--lw-thin) solid rgb(255 255 255 / 26%);
+  background: rgb(33 35 34 / 68%);
+  padding: 0.36rem 0.55rem;
+  color: #f9f8f4;
+}
+
+.material-reason {
+  display: grid;
+  align-items: start;
+  gap: 0 1rem;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  border-top: var(--lw-main) solid var(--line);
+  padding: 0.7rem 0;
+}
+
+.material-reason:last-child {
+  border-bottom: var(--lw-main) solid var(--line);
+}
+
+.material-reason__index {
+  color: var(--brick-deep);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding-top: 0.15rem;
+}
+
+/* ============================================================
+   МОТОРИКА: словарь входов
+   ============================================================ */
+
+/* Текст раскрывается вайпом слева направо — «перо ведёт строку».
+   При плотном интерлиньяже графика буквы выходит за строчный бокс: хвост
+   «р» снизу, бревис «й» сверху. И clip-path, и маска режут ровно по боксу
+   (mask-clip: no-clip Chromium разбирает, но не применяет), поэтому бокс
+   расширяем паддингом, а отрицательным полем возвращаем исходную вёрстку.
+   Контейнер — flex-колонка: у flex-элементов поля не схлопываются,
+   иначе строки съехали бы. */
+.draft-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+.draft-line {
+  --fill: 0%;
+  display: block;
+  margin-block: -0.34em;
+  margin-right: -0.4em;
+  padding-block: 0.34em;
+  padding-right: 0.4em;
+  mask-image: linear-gradient(90deg, #000 0 var(--fill), transparent var(--fill));
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-position: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draft-line {
+    --fill: 100%;
+    mask-image: none !important;
+  }
+
+  .bp-media__wire,
+  .bp-media__edge {
+    display: none !important;
+  }
 }
 
 .section-rule {
@@ -119,8 +973,7 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  border-radius: 999px;
-  padding: 0.8rem 1.05rem;
+  padding: 0.8rem 1.35rem;
   font-size: 0.87rem;
   font-weight: 750;
   line-height: 1;
@@ -169,25 +1022,6 @@ a {
   -webkit-backdrop-filter: blur(18px);
 }
 
-.image-frame {
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: #d9d8d2;
-  box-shadow: var(--shadow);
-}
-
-.image-frame img {
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.image-frame:hover img {
-  transform: scale(1.035);
-}
-
-.image-frame:hover img[data-image-parallax] {
-  transform: none;
-}
-
 .hero-facts {
   gap: 0;
 }
@@ -202,190 +1036,366 @@ a {
   padding-left: 1.35rem;
 }
 
-.hero-visual {
-  isolation: isolate;
-  filter: saturate(0.92) contrast(0.97);
+/* сетка доски слабеет по мере того, как страница «строится» */
+.hero__grid {
+  opacity: calc(0.6 - var(--build) * 0.4);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 52%, transparent 100%);
 }
 
-.hero-sheet {
-  position: absolute;
-  display: grid;
-  grid-template-rows: 2.1rem minmax(0, 1fr) 2.4rem;
-  overflow: hidden;
-  border: 1px solid rgb(48 51 49 / 32%);
-  border-radius: 0.45rem;
-  background: var(--surface);
-  box-shadow: 0 24px 58px rgb(42 37 31 / 14%);
-}
-
-.hero-sheet-header,
-.hero-sheet-footer {
+/* Заголовок: обводка чертежа лежит под заливкой.
+   Оба слоя — с одинаковой типографикой и шириной, чтобы строки совпали. */
+.hero-title {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0 0.85rem;
-  color: var(--graphite-soft);
-  font-size: 0.57rem;
-  font-weight: 800;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  /* типографика задана здесь, чтобы ch считался от кегля заголовка */
+  font-size: clamp(2.5rem, 4.2vw, 4.5rem);
+  letter-spacing: -0.075em;
+  max-width: 13ch;
 }
 
-.hero-sheet-header {
-  border-bottom: 1px solid var(--line-strong);
-  background-image: repeating-linear-gradient(90deg, transparent 0 17px, rgb(48 51 49 / 50%) 17px 18px, transparent 18px 35px, rgb(48 51 49 / 50%) 35px 36px, transparent 36px 72px);
-  background-size: auto 0.6rem;
-  background-position: 0 bottom;
+/* display здесь не задаём: на заливке его переопределяет .draft-lines,
+   когда SplitText режет заголовок на строки */
+.hero-title__layer {
+  font-size: inherit;
+  font-weight: 800;
+  letter-spacing: inherit;
+  line-height: 0.96;
+}
+
+.hero-title__wire {
+  position: absolute;
+  display: block;
+  inset: 0;
+  color: transparent;
+  pointer-events: none;
+  -webkit-text-stroke: 1.15px var(--line-ink);
+}
+
+.hero-title__solid {
+  position: relative;
+  color: var(--graphite);
+}
+
+/* ============================================================
+   ЛИСТ HERO
+   ============================================================ */
+
+.hero-stage {
+  position: relative;
+}
+
+.sheet {
+  display: grid;
+  min-height: 350px;
+  grid-template-columns: 2.3rem minmax(0, 1fr);
+  grid-template-rows: 1.8rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    "corner top"
+    "left canvas"
+    "stamp stamp";
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--surface-high);
+  box-shadow: 0 30px 72px rgb(42 37 31 / 15%);
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    min-height: 470px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sheet {
+    min-height: 540px;
+  }
+}
+
+.sheet__corner {
+  display: grid;
+  border-right: var(--lw-thin) solid var(--line-strong);
+  border-bottom: var(--lw-thin) solid var(--line-strong);
+  color: var(--ink-faint);
+  grid-area: corner;
+  place-items: center;
+}
+
+.sheet__ruler-top,
+.sheet__ruler-left {
+  position: relative;
+  overflow: hidden;
+  color: var(--ink-faint);
+}
+
+.sheet__ruler-top {
+  border-bottom: var(--lw-thin) solid var(--line-strong);
+  grid-area: top;
+}
+
+.sheet__ruler-left {
+  border-right: var(--lw-thin) solid var(--line-strong);
+  grid-area: left;
+}
+
+/* крупные деления через 100px, мелкие через 20px */
+.sheet__ruler-top .sheet__ruler-ticks {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0.55rem;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-ink) 0 var(--lw-main), transparent var(--lw-main) 100px),
+    repeating-linear-gradient(90deg, var(--line-strong) 0 var(--lw-main), transparent var(--lw-main) 20px);
+  background-size: 100% 100%, 100% 52%;
+  background-position: 0 bottom, 0 bottom;
   background-repeat: repeat-x;
 }
 
-.hero-sheet-footer {
-  border-top: 1px solid var(--line-strong);
-}
-
-.hero-sheet-body {
-  display: grid;
-  grid-template-columns: 2.05rem minmax(0, 1fr);
-  min-height: 0;
-}
-
-.hero-sheet-ruler {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid var(--line-strong);
-  background-image: repeating-linear-gradient(180deg, transparent 0 17px, rgb(48 51 49 / 50%) 17px 18px, transparent 18px 35px, rgb(48 51 49 / 50%) 35px 36px, transparent 36px 72px);
-  background-size: 0.6rem auto;
-  background-position: right 0;
+.sheet__ruler-left .sheet__ruler-ticks {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0.55rem;
+  background-image:
+    repeating-linear-gradient(180deg, var(--line-ink) 0 var(--lw-main), transparent var(--lw-main) 100px),
+    repeating-linear-gradient(180deg, var(--line-strong) 0 var(--lw-main), transparent var(--lw-main) 20px);
+  background-size: 100% 100%, 52% 100%;
+  background-position: right 0, right 0;
   background-repeat: repeat-y;
-  padding: 0.65rem 0 0.65rem 0.45rem;
-  color: var(--graphite-soft);
-  font-size: 0.55rem;
-  font-weight: 800;
 }
 
-.hero-sheet-canvas {
+.sheet__ruler-marks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.sheet__ruler-left .sheet__ruler-marks {
+  flex-direction: column;
+}
+
+.sheet__mark {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.sheet__ruler-top .sheet__mark {
+  width: 100px;
+  padding-left: 0.3rem;
+}
+
+.sheet__ruler-left .sheet__mark {
+  height: 100px;
+  padding-top: 0.3rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.sheet__canvas {
   position: relative;
   min-height: 0;
   overflow: hidden;
-  background: #d9d8d2;
+  background: var(--paper-deep);
+  grid-area: canvas;
 }
 
-.hero-measure,
-.hero-drawing-note {
+.sheet__canvas > .bp-media {
   position: absolute;
-  z-index: 2;
-  border: 1px solid rgb(255 255 255 / 48%);
-  background: rgb(33 35 34 / 42%);
+  inset: 0;
+}
+
+.sheet__stamp {
+  border-top: var(--lw-main) solid var(--line-ink);
+  grid-area: stamp;
+}
+
+.sheet__stamp .title-block {
+  border: 0;
+  background: transparent;
+}
+
+.sheet__stamp .title-block__cell {
+  border-bottom: 0;
+}
+
+.sheet__stamp .title-block__cell:last-child {
+  border-right: 0;
+}
+
+/* ============================================================
+   РАЗМЕРЫ И ВЫНОСКИ ПОВЕРХ ФОТО
+   ============================================================ */
+
+.dim--overlay .dim__bar,
+.dim--overlay::before,
+.dim--overlay::after,
+.dim-v--overlay .dim-v__bar,
+.dim-v--overlay::before,
+.dim-v--overlay::after {
+  background: rgb(249 248 244 / 88%);
+}
+
+.dim--overlay .dim__val,
+.dim-v--overlay .dim-v__val {
+  border: var(--lw-thin) solid rgb(255 255 255 / 28%);
+  background: rgb(33 35 34 / 66%);
   color: #f9f8f4;
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  padding: 0.32rem 0.5rem;
 }
 
-.hero-measure {
-  padding: 0.34rem 0.48rem;
+.dim-v--overlay .dim-v__val {
+  padding: 0.5rem 0.32rem;
 }
 
-.hero-measure-horizontal {
-  top: 1rem;
-  right: 1rem;
-}
-
-.hero-measure-vertical {
-  bottom: 1rem;
-  left: 1rem;
-}
-
-.hero-drawing-note {
-  right: 1rem;
-  bottom: 1rem;
-  padding: 0.42rem 0.54rem;
-}
-
-.hero-construction-sweep {
+.hero-dim-h {
   position: absolute;
-  top: 13%;
-  bottom: 13%;
-  z-index: 3;
-  width: 16%;
-  background: linear-gradient(90deg, transparent, rgb(249 248 244 / 12%), rgb(249 248 244 / 78%), rgb(249 248 244 / 12%), transparent);
-  filter: blur(5px);
-  transform: skewX(-16deg);
+  bottom: 7%;
+  left: 50%;
+  right: 8%;
+  z-index: 6;
 }
+
+.hero-dim-v {
+  position: absolute;
+  top: 24%;
+  right: 3%;
+  bottom: 24%;
+  z-index: 6;
+}
+
+.callout {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.callout__dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  flex: none;
+  border: var(--lw-main) solid rgb(249 248 244 / 92%);
+  border-radius: 999px;
+  background: var(--brick);
+}
+
+.callout__leader {
+  height: var(--lw-main);
+  width: 2rem;
+  flex: none;
+  background: rgb(249 248 244 / 72%);
+}
+
+.callout__label {
+  white-space: nowrap;
+  border: var(--lw-thin) solid rgb(255 255 255 / 26%);
+  background: rgb(33 35 34 / 68%);
+  padding: 0.34rem 0.5rem;
+  color: #f9f8f4;
+}
+
+@media (max-width: 767px) {
+  .callout {
+    display: none;
+  }
+
+  .hero-dim-h {
+    left: 12%;
+  }
+}
+
+/* ============================================================
+   СРАВНЕНИЕ СТАДИЙ
+   ============================================================ */
 
 .before-after-stage {
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: #d9d8d2;
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--paper-deep);
   box-shadow: 0 20px 60px rgb(42 37 31 / 9%);
 }
 
-.before-after-label,
-.project-number,
-.project-area {
-  border: 1px solid rgb(255 255 255 / 46%);
-  background: rgb(35 37 35 / 42%);
-  color: #f9f8f4;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  padding: 0.48rem 0.62rem;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.ba-ruler {
+  position: relative;
+  height: 1.6rem;
+  margin-top: 2.5rem;
+  border: var(--lw-main) solid var(--line-ink);
+  border-bottom: 0;
+  background: var(--surface-high);
 }
 
-.project-frame::after {
+.ba-ruler__ticks {
   position: absolute;
-  inset: 0;
-  content: "";
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0.5rem;
   background-image:
-    linear-gradient(to right, rgb(248 246 240 / 20%) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(248 246 240 / 20%) 1px, transparent 1px),
-    linear-gradient(180deg, transparent 42%, rgb(28 30 29 / 58%) 100%);
-  background-size: 28px 28px, 28px 28px, auto;
-  opacity: 0;
-  transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    repeating-linear-gradient(90deg, var(--line-ink) 0 var(--lw-main), transparent var(--lw-main) 100px),
+    repeating-linear-gradient(90deg, var(--line-strong) 0 var(--lw-main), transparent var(--lw-main) 20px);
+  background-size: 100% 100%, 100% 52%;
+  background-position: 0 bottom, 0 bottom;
+  background-repeat: repeat-x;
 }
 
-.project-number,
-.project-area {
-  z-index: 1;
-  opacity: 0;
-  transform: translateY(0.5rem);
-  transition: opacity 420ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+.ba-ruler__cursor {
+  position: absolute;
+  top: 0.28rem;
+  border-left: var(--lw-bold) solid var(--brick);
+  padding-left: 0.3rem;
+  color: var(--brick-deep);
+  transform: translateX(-1px);
+  transition: left 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.group:hover .project-frame::after,
-.group:focus-within .project-frame::after,
-.group:hover .project-number,
-.group:hover .project-area,
-.group:focus-within .project-number,
-.group:focus-within .project-area {
-  opacity: 1;
-  transform: translateY(0);
+.ba-split {
+  width: var(--lw-bold);
+  background: var(--brick);
+  box-shadow: 0 0 18px 2px rgb(168 69 48 / 40%);
+  transition: left 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.tilt-card {
-  transform:
-    perspective(900px)
-    rotateX(var(--tilt-x, 0deg))
-    rotateY(var(--tilt-y, 0deg))
-    translateZ(0);
-  transform-style: preserve-3d;
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+.ba-split__handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  height: 2.75rem;
+  width: 2.75rem;
+  place-items: center;
+  border: var(--lw-main) solid var(--brick);
+  background: var(--surface-high);
+  color: var(--brick-deep);
+  transform: translate(-50%, -50%);
 }
 
-.tilt-card > * {
-  transform: translateZ(16px);
+.ba-split__readout {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 50%;
+  border: var(--lw-thin) solid rgb(255 255 255 / 26%);
+  background: rgb(33 35 34 / 72%);
+  padding: 0.3rem 0.45rem;
+  color: #f9f8f4;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.before-after-label {
+  border: var(--lw-thin) solid rgb(255 255 255 / 28%);
+  background: rgb(35 37 35 / 62%);
+  color: #f9f8f4;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  padding: 0.42rem 0.58rem;
+  text-transform: uppercase;
 }
 
 .project-rail {
@@ -396,6 +1406,85 @@ a {
   display: none;
 }
 
+/* ============================================================
+   МАРШРУТ СТРОЙКИ
+   ============================================================ */
+
+.route-gauge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  border-top: var(--lw-bold) solid var(--line-ink);
+  margin-top: 2.5rem;
+  padding-top: 0.9rem;
+  max-width: 18rem;
+}
+
+.route-gauge__value {
+  color: var(--brick-deep);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.route-gauge__total {
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+.route-gauge__track {
+  width: 100%;
+  height: var(--lw-bold);
+  background: var(--line);
+  overflow: hidden;
+}
+
+.route-gauge__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--brick);
+  transform-origin: left center;
+  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.route-marker {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex: none;
+  place-items: center;
+  border: var(--lw-main) solid var(--line-strong);
+  background: var(--paper);
+  color: var(--brick-deep);
+  transition: border-color 420ms ease, background-color 420ms ease;
+}
+
+.route-step.is-active .route-marker {
+  border-color: var(--brick);
+  background: var(--surface-high);
+}
+
+.route-body {
+  border-bottom: var(--lw-main) solid var(--line);
+  padding: 0.35rem 0 1.25rem;
+  flex: 1;
+}
+
+.route-step:last-child .route-body {
+  border-bottom: 0;
+}
+
+.route-index {
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
 .route-line {
   transform: scaleY(0);
   transform-origin: top;
@@ -404,6 +1493,53 @@ a {
 .route-step {
   opacity: 0.42;
   transition: opacity 500ms ease;
+}
+
+/* ============================================================
+   СЦЕНАРИИ: варианты компоновки
+   ============================================================ */
+
+.scenario {
+  position: relative;
+  min-height: 11rem;
+  border: var(--lw-main) solid var(--line);
+  background: var(--surface);
+  padding: 1.5rem;
+  transition: border-color 380ms ease, background-color 380ms ease;
+}
+
+.scenario:hover {
+  border-color: var(--line-ink);
+  background: var(--surface-high);
+}
+
+.scenario__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.scenario__plan {
+  width: 3.1rem;
+  height: auto;
+  color: var(--brick);
+  opacity: 0.75;
+  transition: opacity 380ms ease;
+}
+
+.scenario:hover .scenario__plan {
+  opacity: 1;
+}
+
+.scenario__arrow {
+  color: var(--ink-faint);
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), color 260ms ease;
+}
+
+.scenario:hover .scenario__arrow {
+  color: var(--brick-deep);
+  transform: translate(0.25rem, -0.25rem);
 }
 
 .route-step .route-result {
@@ -424,12 +1560,109 @@ a {
   transform: translateY(0);
 }
 
+/* ============================================================
+   РАСЧЁТНЫЙ ЛИСТ
+   ============================================================ */
+
+.calc-sheet {
+  position: relative;
+  border: var(--lw-main) solid var(--line-ink);
+  background: var(--surface-high);
+  padding: 1.35rem;
+  box-shadow: 0 24px 62px rgb(42 37 31 / 11%);
+}
+
+@media (min-width: 640px) {
+  .calc-sheet {
+    padding: 1.85rem;
+  }
+}
+
+/* разлиновка расчётного листа */
+.calc-sheet::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: linear-gradient(to bottom, var(--line) var(--lw-main), transparent var(--lw-main));
+  background-size: 100% 2.25rem;
+}
+
+.calc-sheet > * {
+  position: relative;
+}
+
+.calc-result {
+  border-left: var(--lw-bold) solid var(--brick);
+  padding-left: 0.9rem;
+}
+
 .estimate-number {
   font-variant-numeric: tabular-nums;
 }
 
+/* ============================================================
+   ФИНАЛЬНЫЙ ЛИСТ: КОНТАКТЫ
+   ============================================================ */
+
 .contact-panel {
+  border: var(--lw-main) solid var(--graphite-soft);
   box-shadow: 0 28px 70px rgb(29 31 30 / 20%);
+}
+
+.contact-grid {
+  opacity: 0.16;
+  filter: invert(1);
+}
+
+.contact-stage {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.2rem;
+  z-index: 10;
+  border: var(--lw-thin) solid rgb(255 255 255 / 22%);
+  padding: 0.36rem 0.55rem;
+  color: rgb(248 246 240 / 72%);
+}
+
+.contact-code {
+  border-color: rgb(255 255 255 / 34%);
+  color: var(--terracotta);
+}
+
+.contact-rule {
+  background: rgb(255 255 255 / 34%);
+}
+
+/* ============================================================
+   ВОПРОСЫ
+   ============================================================ */
+
+.faq-index {
+  color: var(--ink-faint);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.faq-item summary:hover .faq-index {
+  color: var(--brick-deep);
+}
+
+/* ============================================================
+   ПОДВАЛ
+   ============================================================ */
+
+.footer-stamp {
+  border-width: var(--lw-bold);
+}
+
+.footer-stamp .title-block__cell:nth-child(6n) {
+  border-right: 0;
+}
+
+.footer-stamp .title-block__cell:nth-last-child(-n + 3) {
+  border-bottom: 0;
 }
 
 .contact-visual {
@@ -516,9 +1749,8 @@ a {
 
 .field {
   width: 100%;
-  border: 1px solid var(--line-strong);
-  border-radius: 0.7rem;
-  background: rgb(247 246 242 / 84%);
+  border: var(--lw-main) solid var(--line-strong);
+  background: rgb(247 246 242 / 92%);
   padding: 0.86rem 0.95rem;
   color: var(--ink);
   transition: border-color 180ms ease, box-shadow 180ms ease;
@@ -568,6 +1800,22 @@ a {
 
   .route-line {
     transform: scaleY(1);
+  }
+
+  /* классы is-active расставляет page-motion, который здесь не работает —
+     раскрываем этапы маршрута статически */
+  .route-step {
+    opacity: 1;
+  }
+
+  .route-step .route-result {
+    max-height: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .route-marker {
+    border-color: var(--brick);
   }
 }
 

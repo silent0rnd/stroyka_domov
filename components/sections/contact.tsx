@@ -35,8 +35,8 @@ export function Contact() {
 
   return (
     <section id="contact" className="px-4 pb-20 pt-8 sm:px-6 lg:px-10 lg:pb-28">
-      <div className="contact-panel relative mx-auto overflow-hidden rounded-[1.25rem] bg-[var(--graphite)] px-5 py-10 text-[#f8f6f0] sm:px-8 lg:max-w-[1440px] lg:px-14 lg:py-14" data-reveal>
-        <div className="architect-grid pointer-events-none absolute inset-0 opacity-20" />
+      <div className="contact-panel relative mx-auto overflow-hidden bg-[var(--graphite)] px-5 py-10 text-[#f8f6f0] sm:px-8 lg:max-w-[1440px] lg:px-14 lg:py-14">
+        <div className="architect-grid contact-grid pointer-events-none absolute inset-0" />
         <div className="contact-visual pointer-events-none absolute inset-y-0 right-0 hidden w-[55%] lg:block">
           <Image
             src="./images/project-birch.png"
@@ -46,13 +46,25 @@ export function Contact() {
             className="object-cover object-center"
           />
         </div>
+
+        <span className="contact-stage tech-sm" aria-hidden="true">
+          Лист 12 · Передача объекта
+        </span>
+
         <div className="relative z-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
-            <p className="section-kicker text-[var(--terracotta)]">Следующий шаг</p>
-            <h2 className="mt-5 max-w-[10ch] text-[clamp(2.25rem,4.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.065em]">
+            <p className="sheet-head__meta tech">
+              <span className="sheet-head__code contact-code">А-12</span>
+              <span className="sheet-head__rule contact-rule" aria-hidden="true" />
+              <span className="text-[var(--terracotta)]">Следующий шаг</span>
+            </p>
+            <h2
+              data-draft="text"
+              className="mt-6 max-w-[10ch] text-[clamp(2.25rem,4.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.065em]"
+            >
               Обсудим дом, который подходит именно вашей семье.
             </h2>
-            <p className="mt-5 max-w-md text-[0.98rem] leading-7 text-[#d6d2ca]">
+            <p data-draft="text" className="mt-5 max-w-md text-[0.98rem] leading-7 text-[#d6d2ca]">
               Оставьте контакты. Подготовим предварительный расчет и свяжемся в течение одного рабочего дня.
             </p>
           </div>
@@ -94,7 +106,7 @@ export function Contact() {
               Согласен на обработку персональных данных для обратной связи.
             </label>
             {errors.consent && <span id="contact-consent-error" className="text-[0.78rem] font-medium text-[#f4b6a9]">{errors.consent}</span>}
-            <button type="submit" className="mt-2 inline-flex min-h-[3.15rem] items-center justify-center gap-2 rounded-full bg-[var(--terracotta)] px-5 text-sm font-extrabold text-[#2c2521] transition hover:-translate-y-0.5 hover:bg-[#dd8165] active:scale-[0.98] sm:w-fit">
+            <button type="submit" className="mt-2 inline-flex min-h-[3.15rem] items-center justify-center gap-2 bg-[var(--terracotta)] px-6 text-sm font-extrabold text-[#2c2521] transition hover:-translate-y-0.5 hover:bg-[#dd8165] active:scale-[0.98] sm:w-fit">
               Получить расчет
               <ArrowRight size={18} weight="bold" aria-hidden="true" />
             </button>

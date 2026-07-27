@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/manrope/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./globals.css";
+import { PaperGrain } from "@/components/draft/paper-grain";
 
 export const metadata: Metadata = {
   title: "ДомКирпич - кирпичные дома под ключ",
@@ -16,7 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        {children}
+        <PaperGrain />
+      </body>
     </html>
   );
 }

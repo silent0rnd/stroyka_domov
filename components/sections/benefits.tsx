@@ -1,39 +1,43 @@
+import { SectionHead } from "@/components/draft/section-head";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { TiltCard } from "@/components/ui/tilt-card";
 import { benefits } from "@/data/site";
 
 const icons: IconName[] = ["scales", "shield-check", "path", "calendar-check", "user-focus"];
-const cardSizes = ["xl:col-span-5", "xl:col-span-3", "xl:col-span-4", "xl:col-span-6", "xl:col-span-6"];
 
 export function Benefits() {
   return (
-    <section id="benefits" className="section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
-      <div className="mx-auto max-w-[1440px]" data-reveal>
-        <div className="max-w-2xl">
-          <h2 className="text-[clamp(2rem,4vw,3.65rem)] font-extrabold leading-[1.02] tracking-[-0.055em] text-[var(--graphite)]">
-            Предсказуемая стройка начинается с ясных договоренностей.
-          </h2>
-          <p className="mt-5 max-w-xl text-[0.98rem] leading-7 text-[var(--ink-soft)]">
-            Собрали для вас главные опоры процесса, чтобы проектирование и строительство не превращались в черный ящик.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-12">
-          {benefits.map((benefit, index) => {
-            const icon = icons[index];
-            return (
-              <TiltCard
-                key={benefit.title}
-                className={`relative min-h-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--surface)] p-6 ${cardSizes[index]}`}
-              >
-                <div className="absolute right-[-2rem] top-[-2rem] h-28 w-28 rounded-full border border-[var(--line)]" />
-                <Icon name={icon} size={30} weight="duotone" className="relative text-[var(--brick)]" />
-                <div className="relative mt-10">
-                  <h3 className="text-xl font-extrabold tracking-[-0.045em] text-[var(--graphite)]">{benefit.title}</h3>
-                  <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--ink-soft)]">{benefit.text}</p>
-                </div>
-              </TiltCard>
-            );
-          })}
+    <section id="benefits" className="draft-sheet section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+      <div className="sheet-gutter" aria-hidden="true">
+        <span className="sheet-code tech-sm">Ведомость договоренностей</span>
+      </div>
+
+      <div className="mx-auto max-w-[1440px]">
+        <SectionHead
+          sheet="А-02"
+          kicker="Ведомость договоренностей"
+          title="Предсказуемая стройка начинается с ясных договоренностей."
+          lead="Собрали главные опоры процесса, чтобы проектирование и строительство не превращались в черный ящик."
+          dim={`${benefits.length} позиций`}
+          className="max-w-2xl"
+          leadClassName="max-w-xl"
+        />
+
+        <div className="spec mt-12">
+          <div className="spec__head tech-sm tech" aria-hidden="true">
+            <span>№</span>
+            <span>Наименование</span>
+            <span>Что это значит на практике</span>
+            <span />
+          </div>
+
+          {benefits.map((benefit, index) => (
+            <article key={benefit.title} className="spec__row" data-draft="rise">
+              <span className="spec__index num">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="spec__title">{benefit.title}</h3>
+              <p className="spec__text">{benefit.text}</p>
+              <Icon name={icons[index]} size={26} weight="duotone" className="spec__icon" />
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -1,7 +1,9 @@
 "use client";
 
-import { ArrowRight, CheckCircle, HouseLine } from "@phosphor-icons/react";
+import { ArrowRight, CheckCircle } from "@phosphor-icons/react";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { SectionHead } from "@/components/draft/section-head";
+import { TitleBlock } from "@/components/draft/title-block";
 
 type EstimateForm = {
   area: number;
@@ -33,6 +35,12 @@ const finishMultiplier = {
   base: 1,
   comfort: 1.12,
   full: 1.27
+};
+
+const finishLabels: Record<EstimateForm["finish"], string> = {
+  base: "Базовая",
+  comfort: "Комфорт",
+  full: "Полная"
 };
 
 function useAnimatedNumber(target: number, enabled: boolean, run: number) {
@@ -125,21 +133,27 @@ export function Calculator() {
   };
 
   return (
-    <section id="calculator" className="section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
-      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20" data-reveal>
+    <section id="calculator" className="draft-sheet section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
+      <div className="sheet-gutter" aria-hidden="true">
+        <span className="sheet-code tech-sm">Расчётный лист</span>
+      </div>
+
+      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
         <div className="lg:pt-4">
-          <h2 className="max-w-[11ch] text-[clamp(2rem,4vw,3.65rem)] font-extrabold leading-[1.02] tracking-[-0.06em] text-[var(--graphite)]">
-            Предварительный расчет без лишних звонков.
-          </h2>
-          <p className="mt-5 max-w-md text-[0.98rem] leading-7 text-[var(--ink-soft)]">
-            Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом.
-          </p>
+          <SectionHead
+            sheet="А-07"
+            kicker="Предварительный расчёт"
+            title="Предварительный расчет без лишних звонков."
+            lead="Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом."
+            titleClassName="max-w-[11ch]"
+            leadClassName="max-w-md"
+          />
           <div className="mt-9 border-l-2 border-[var(--brick)] pl-4 text-sm leading-6 text-[var(--ink-soft)]">
             Точная стоимость определяется после консультации, выбора проекта и анализа участка.
           </div>
         </div>
 
-        <div className="rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] sm:p-7">
+        <div className="calc-sheet">
           <div className="grid gap-5 sm:grid-cols-2">
             <label className="grid gap-2 text-sm font-bold text-[var(--graphite)]">
               Площадь дома, м²
@@ -192,7 +206,7 @@ export function Calculator() {
             </label>
           </div>
 
-          <label className="mt-5 flex min-h-12 cursor-pointer items-center gap-3 rounded-[0.7rem] border border-[var(--line)] px-4 text-sm font-bold text-[var(--graphite)]">
+          <label className="mt-5 flex min-h-12 cursor-pointer items-center gap-3 border border-[var(--line)] px-4 text-sm font-bold text-[var(--graphite)]">
             <input
               className="h-5 w-5 accent-[var(--brick)]"
               type="checkbox"
@@ -208,18 +222,26 @@ export function Calculator() {
           </button>
 
           {showEstimate && (
-            <div className="mt-7 border-t border-[var(--line)] pt-7" aria-live="polite">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-soft)]">
-                    Предварительный ориентир
-                  </p>
-                  <p className="estimate-number mt-2 text-[clamp(2rem,4vw,3.4rem)] font-extrabold leading-none tracking-[-0.07em] text-[var(--brick-deep)]">
-                    {animatedLow.toLocaleString("ru-RU")}-{animatedHigh.toLocaleString("ru-RU")} млн ₽
-                  </p>
-                </div>
-                <HouseLine size={46} weight="thin" className="text-[var(--graphite-soft)]" aria-hidden="true" />
+            <div className="mt-7 border-t-2 border-[var(--line-ink)] pt-7" aria-live="polite">
+              <div className="calc-result">
+                <p className="tech-sm tech text-[var(--ink-faint)]">Предварительный ориентир</p>
+                <p className="estimate-number num mt-2 text-[clamp(2rem,4vw,3.3rem)] font-extrabold leading-none tracking-[-0.05em] text-[var(--brick-deep)]">
+                  {animatedLow.toLocaleString("ru-RU")}–{animatedHigh.toLocaleString("ru-RU")}
+                  <span className="ml-2 text-[0.9rem] font-bold tracking-normal text-[var(--ink-soft)]">млн ₽</span>
+                </p>
               </div>
+
+              {/* исходные данные расчёта — как заполненный штамп */}
+              <TitleBlock
+                columns={4}
+                className="mt-6"
+                cells={[
+                  { key: "Площадь", value: `${form.area} м²` },
+                  { key: "Этажность", value: form.floors === "2" ? "2 этажа" : "1 этаж" },
+                  { key: "Отделка", value: finishLabels[form.finish] },
+                  { key: "Гараж", value: form.garage ? "Да" : "Нет", accent: form.garage }
+                ]}
+              />
 
               <form className="mt-7 grid gap-4 sm:grid-cols-2" onSubmit={submitLead} noValidate>
                 <label className="grid gap-2 text-sm font-bold text-[var(--graphite)]">
@@ -256,7 +278,7 @@ export function Calculator() {
               </form>
 
               {isSent && (
-                <p className="mt-5 flex items-center gap-2 rounded-[0.7rem] bg-[rgb(168_69_48/10%)] px-4 py-3 text-sm font-bold text-[var(--brick-deep)]" role="status">
+                <p className="mt-5 flex items-center gap-2 bg-[rgb(168_69_48/10%)] px-4 py-3 text-sm font-bold text-[var(--brick-deep)]" role="status">
                   <CheckCircle size={19} weight="fill" aria-hidden="true" />
                   Данные сохранены в интерфейсе. Мы подготовим ориентир в течение одного рабочего дня.
                 </p>
