@@ -9,8 +9,11 @@ const nextConfig: NextConfig = {
    */
   assetPrefix: process.env.NODE_ENV === "production" ? "./" : undefined,
   images: {
-    unoptimized: true,
-    formats: ["image/avif", "image/webp"]
+    /* Экспорт отдаёт статику, поэтому варианты картинок готовятся заранее
+       (scripts/generate-images.mjs), а загрузчик выбирает нужную ширину. */
+    loader: "custom",
+    loaderFile: "./image-loader.ts",
+    deviceSizes: [640, 828, 1080, 1600]
   }
 };
 

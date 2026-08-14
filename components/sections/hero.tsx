@@ -141,11 +141,21 @@ export function Hero() {
 
     /* Строки режем только после загрузки шрифтов, иначе разбивка съедет
        и контур-дубликат перестанет совпадать с заливкой. */
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(build);
-    } else {
-      build();
-    }
+    const fonts = document.fonts?.ready ?? Promise.resolve();
+
+    /* Вайп проявляет фотографию, поэтому ждём и сам кадр — иначе «проявление»
+       проходит по пустому месту. Ошибку загрузки считаем готовностью:
+       без этого вступление не стартует вообще. */
+    const image = scope.querySelector<HTMLImageElement>(".hero-media img");
+    const frame =
+      !image || image.complete
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => {
+            image.addEventListener("load", () => resolve(), { once: true });
+            image.addEventListener("error", () => resolve(), { once: true });
+          });
+
+    Promise.all([fonts, frame]).then(build);
 
     return () => {
       cancelled = true;

@@ -56,7 +56,7 @@ export function Contact() {
             <p className="sheet-head__meta tech">
               <span className="sheet-head__code contact-code">А-13</span>
               <span className="sheet-head__rule contact-rule" aria-hidden="true" />
-              <span className="text-[var(--terracotta)]">Следующий шаг</span>
+              <span className="text-[var(--terracotta-on-dark)]">Следующий шаг</span>
             </p>
             <h2
               data-draft="text"

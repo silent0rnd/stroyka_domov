@@ -59,7 +59,7 @@ export function BeforeAfter() {
           </span>
         </div>
 
-        <div className="before-after-stage relative aspect-[16/9] min-h-[330px] sm:min-h-[480px]">
+        <div className="before-after-stage relative aspect-[16/9] w-full min-h-[330px] sm:min-h-[480px]">
           <Image
             src="./images/facade-built.png"
             alt="Вариант исполнения современного кирпичного дома"

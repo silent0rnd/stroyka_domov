@@ -5,7 +5,18 @@
       "name": "dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:\\Users\\user\\AppData\\Local\\Temp\\claude\\C--Users-user-Desktop-------stroyka-domov\\622a0df9-f390-473c-8d5d-ecca55a17aca\\scratchpad\\static-server.js",
+        "C:\\Users\\user\\Desktop\\Сайты\\stroyka_domov\\out",
+        "4413"
+      ],
+      "port": 4413
     }
   ]
 }
