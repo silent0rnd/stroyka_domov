@@ -1214,12 +1214,12 @@ a {
 .sheet {
   display: grid;
   min-height: 350px;
-  grid-template-columns: 2.3rem minmax(0, 1fr);
+  grid-template-columns: 2.3rem minmax(0, 1fr) 2.3rem;
   grid-template-rows: 1.8rem minmax(0, 1fr) auto;
   grid-template-areas:
-    "corner top"
-    "left canvas"
-    "stamp stamp";
+    "corner top corner-r"
+    "left canvas right"
+    "stamp stamp stamp";
   border: var(--lw-main) solid var(--line-ink);
   background: var(--surface-high);
   box-shadow: 0 30px 72px rgb(42 37 31 / 15%);
@@ -1246,8 +1246,15 @@ a {
   place-items: center;
 }
 
+.sheet__corner--right {
+  border-right: 0;
+  border-left: var(--lw-thin) solid var(--line-strong);
+  grid-area: corner-r;
+}
+
 .sheet__ruler-top,
-.sheet__ruler-left {
+.sheet__ruler-left,
+.sheet__ruler-right {
   position: relative;
   overflow: hidden;
   color: var(--ink-faint);
@@ -1261,6 +1268,11 @@ a {
 .sheet__ruler-left {
   border-right: var(--lw-thin) solid var(--line-strong);
   grid-area: left;
+}
+
+.sheet__ruler-right {
+  border-left: var(--lw-thin) solid var(--line-strong);
+  grid-area: right;
 }
 
 /* крупные деления через 100px, мелкие через 20px */
@@ -1292,6 +1304,21 @@ a {
   background-repeat: repeat-y;
 }
 
+/* зеркало левой: засечки растут от края канвы наружу */
+.sheet__ruler-right .sheet__ruler-ticks {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.55rem;
+  background-image:
+    repeating-linear-gradient(180deg, var(--line-ink) 0 var(--lw-main), transparent var(--lw-main) 100px),
+    repeating-linear-gradient(180deg, var(--line-strong) 0 var(--lw-main), transparent var(--lw-main) 20px);
+  background-size: 100% 100%, 52% 100%;
+  background-position: left 0, left 0;
+  background-repeat: repeat-y;
+}
+
 .sheet__ruler-marks {
   position: absolute;
   inset: 0;
@@ -1299,7 +1326,8 @@ a {
   overflow: hidden;
 }
 
-.sheet__ruler-left .sheet__ruler-marks {
+.sheet__ruler-left .sheet__ruler-marks,
+.sheet__ruler-right .sheet__ruler-marks {
   flex-direction: column;
 }
 
@@ -1314,7 +1342,8 @@ a {
   padding-left: 0.3rem;
 }
 
-.sheet__ruler-left .sheet__mark {
+.sheet__ruler-left .sheet__mark,
+.sheet__ruler-right .sheet__mark {
   height: 100px;
   padding-top: 0.3rem;
   justify-content: center;
@@ -1689,12 +1718,18 @@ a {
   transform: translate(0.25rem, -0.25rem);
 }
 
+/* высота строки-результата считается из самого текста: раскрываем
+   через grid-строку 0fr -> 1fr, чтобы длинный текст не обрезался */
 .route-step .route-result {
-  max-height: 0;
+  display: grid;
+  grid-template-rows: 0fr;
   opacity: 0;
-  overflow: hidden;
   transform: translateY(-0.35rem);
-  transition: max-height 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 360ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-rows 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 360ms ease, transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.route-step .route-result > p {
+  overflow: hidden;
 }
 
 .route-step.is-active {
@@ -1702,7 +1737,7 @@ a {
 }
 
 .route-step.is-active .route-result {
-  max-height: 4.5rem;
+  grid-template-rows: 1fr;
   opacity: 1;
   transform: translateY(0);
 }
@@ -1956,7 +1991,7 @@ a {
   }
 
   .route-step .route-result {
-    max-height: none;
+    grid-template-rows: 1fr;
     opacity: 1;
     transform: none;
   }

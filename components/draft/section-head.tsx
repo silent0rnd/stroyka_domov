@@ -11,7 +11,9 @@ type SectionHeadProps = {
   /** Значение на размерной линии под заголовком. */
   dim?: string;
   className?: string;
-  /** Ширина заголовочного бокса. По умолчанию 42rem — дальше его сужает колонка сетки. */
+  /** Ширина и кегль заголовка, задаются целиком. В шаблоне их нет: две одинаковые
+   *  утилиты кегля конфликтуют, и побеждает не та, что позже в className,
+   *  а та, что позже в собранном CSS. */
   titleClassName?: string;
   leadClassName?: string;
 };
@@ -27,7 +29,7 @@ export function SectionHead({
   lead,
   dim,
   className = "",
-  titleClassName = "max-w-[42rem]",
+  titleClassName = "max-w-[42rem] text-[clamp(2rem,4.2vw,3.7rem)]",
   leadClassName = ""
 }: SectionHeadProps) {
   return (
@@ -39,7 +41,7 @@ export function SectionHead({
       </p>
       <h2
         data-draft="text"
-        className={`mt-6 text-[clamp(2rem,4.2vw,3.7rem)] font-extrabold leading-[1.02] tracking-[-0.06em] text-[var(--graphite)] ${titleClassName}`}
+        className={`mt-6 font-extrabold leading-[1.02] tracking-[-0.06em] text-[var(--graphite)] ${titleClassName}`}
       >
         {title}
       </h2>

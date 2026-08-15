@@ -203,6 +203,17 @@ export function Hero() {
               </div>
             </div>
 
+            <span className="sheet__corner sheet__corner--right" aria-hidden="true" />
+
+            <div className="sheet__ruler-right" aria-hidden="true">
+              <span data-hero-rule-v className="sheet__ruler-ticks" />
+              <div className="sheet__ruler-marks">
+                {leftMarks.map((mark) => (
+                  <span key={mark} className="sheet__mark tech-sm">{mark}</span>
+                ))}
+              </div>
+            </div>
+
             <div className="sheet__canvas">
               <BlueprintMedia
                 src="./images/hero-blueprint-house.png"

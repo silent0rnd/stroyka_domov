@@ -83,7 +83,9 @@ export function ConstructionRoute() {
                   <span className="num route-index">{String(index + 1).padStart(2, "0")}</span>
                   <h3 className="text-lg font-extrabold tracking-[-0.035em] text-[var(--graphite)]">{step.title}</h3>
                 </div>
-                <p className="route-result mt-2 max-w-md text-sm leading-6 text-[var(--ink-soft)]">{step.result}</p>
+                <div className="route-result mt-2 max-w-md">
+                  <p className="text-sm leading-6 text-[var(--ink-soft)]">{step.result}</p>
+                </div>
               </div>
             </li>
           ))}

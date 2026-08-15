@@ -145,6 +145,7 @@ export function Calculator() {
             kicker="Предварительный расчёт"
             title="Предварительный расчет без лишних звонков."
             lead="Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом."
+            titleClassName="max-w-[42rem] text-[clamp(2rem,3.6vw,3.3rem)]"
             leadClassName="max-w-md"
           />
           <div className="mt-9 border-l-2 border-[var(--brick)] pl-4 text-sm leading-6 text-[var(--ink-soft)]">
