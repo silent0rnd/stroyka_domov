@@ -2,29 +2,27 @@
 
 import { ArrowRight, Ruler, Timer } from "@phosphor-icons/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
 import { BlueprintMedia } from "@/components/draft/blueprint-media";
 import { TitleBlock } from "@/components/draft/title-block";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(SplitText);
 
 /** Деления верхней линейки листа, в метрах. */
 const topMarks = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
 /** Деления боковой линейки листа. */
 const leftMarks = [0, 2, 4, 6, 8, 10];
 
-/** Выноски к узлам фасада — появляются при прокрутке закреплённого листа. */
+/** Выноски к узлам фасада — ложатся на кадр сразу после его загрузки. */
 const callouts = [
-  { label: "Облицовочный кирпич", top: "38%", left: "62%" },
-  { label: "Плоская кровля", top: "17%", left: "78%" },
+  { label: "Облицовочный кирпич", top: "47%", left: "58%" },
+  { label: "Плоская кровля", top: "33%", left: "78%" },
   { label: "Переход: чертёж — факт", top: "62%", left: "31%" }
 ];
 
 export function Hero() {
   const section = useRef<HTMLElement>(null);
-  const stage = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const scope = section.current;
@@ -55,6 +53,13 @@ export function Hero() {
         titleSplit = new SplitText("[data-hero-title]", { type: "lines", linesClass: "draft-line" });
         scope.querySelector("[data-hero-title]")?.classList.add("draft-lines");
         gsap.set(titleSplit.lines, { "--fill": "0%" });
+
+        /* Стартовые состояния размеров и выносок — до первого кадра таймлайна,
+           иначе они успевают мелькнуть на готовом фото. */
+        gsap.set("[data-hero-dim]", { autoAlpha: 0, "--serif": 0 });
+        gsap.set("[data-hero-dim] .dim__bar", { scaleX: 0 });
+        gsap.set("[data-hero-dim] .dim-v__bar", { scaleY: 0 });
+        gsap.set("[data-hero-callout]", { autoAlpha: 0, x: -12 });
 
         /* --- вступление: лист собирается, дом проявляется из чертежа --- */
         const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -87,55 +92,16 @@ export function Hero() {
             },
             "<0.2"
           )
-          .from("[data-hero-stamp] .title-block__cell", { autoAlpha: 0, duration: 0.35, stagger: 0.06 }, "-=0.9");
+          .from("[data-hero-stamp] .title-block__cell", { autoAlpha: 0, duration: 0.35, stagger: 0.06 }, "-=0.9")
 
-        /* --- проход детализации: размеры и выноски ложатся на фасад ---
-           Стартовые состояния задаём отдельно: в scrub-таймлайне fromTo
-           отрисовывает начальные значения только у первого твина. */
-        const drawDetail = (timeline: gsap.core.Timeline) => {
-          gsap.set("[data-hero-dim]", { autoAlpha: 0, "--serif": 0 });
-          gsap.set("[data-hero-dim] .dim__bar", { scaleX: 0 });
-          gsap.set("[data-hero-dim] .dim-v__bar", { scaleY: 0 });
-          gsap.set("[data-hero-callout]", { autoAlpha: 0, x: -12 });
-
-          return timeline
-            .to("[data-hero-dim]", { autoAlpha: 1, duration: 0.4, stagger: 0.12 })
-            .to("[data-hero-dim] .dim__bar", { scaleX: 1, duration: 0.6 }, "<")
-            .to("[data-hero-dim] .dim-v__bar", { scaleY: 1, duration: 0.6 }, "<")
-            .to("[data-hero-dim]", { "--serif": 1, duration: 0.25 }, "-=0.3")
-            .to("[data-hero-dim] .dim__val, [data-hero-dim] .dim-v__val", { opacity: 1, duration: 0.3 }, "<")
-            .to("[data-hero-callout]", { autoAlpha: 1, x: 0, duration: 0.45, stagger: 0.22 }, "-=0.2");
-        };
-
-        const media = gsap.matchMedia();
-
-        /* На широких экранах лист закрепляется и детализируется скроллом. */
-        media.add("(min-width: 1024px)", () => {
-          drawDetail(
-            gsap.timeline({
-              scrollTrigger: {
-                trigger: section.current,
-                start: "top top",
-                end: "+=70%",
-                pin: true,
-                pinSpacing: true,
-                scrub: 0.6,
-                anticipatePin: 1
-              }
-            })
-          ).to("[data-hero-callout]", { duration: 0.5 });
-        });
-
-        /* На узких экранах пиннинг мешает — тот же проход, но по появлению. */
-        media.add("(max-width: 1023px)", () => {
-          drawDetail(
-            gsap.timeline({
-              scrollTrigger: { trigger: stage.current, start: "top 70%", once: true }
-            })
-          );
-        });
-
-        ScrollTrigger.refresh();
+          /* --- детализация: размеры и выноски ложатся на фасад, пока
+                 фотография доснимается. Скролл на это не влияет. --- */
+          .to("[data-hero-dim]", { autoAlpha: 1, duration: 0.4, stagger: 0.12 }, "-=0.6")
+          .to("[data-hero-dim] .dim__bar", { scaleX: 1, duration: 0.6 }, "<")
+          .to("[data-hero-dim] .dim-v__bar", { scaleY: 1, duration: 0.6 }, "<")
+          .to("[data-hero-dim]", { "--serif": 1, duration: 0.25 }, "-=0.3")
+          .to("[data-hero-dim] .dim__val, [data-hero-dim] .dim-v__val", { opacity: 1, duration: 0.3 }, "<")
+          .to("[data-hero-callout]", { autoAlpha: 1, x: 0, duration: 0.45, stagger: 0.22 }, "-=0.2");
       });
     };
 
@@ -215,7 +181,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div data-hero-stage ref={stage} className="hero-stage">
+        <div data-hero-stage className="hero-stage">
           <div data-hero-sheet className="sheet">
             <span className="sheet__corner tech-sm" aria-hidden="true">мм</span>
 
