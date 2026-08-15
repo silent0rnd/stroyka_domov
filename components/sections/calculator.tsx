@@ -101,7 +101,7 @@ export function Calculator() {
 
   const calculate = () => {
     if (form.area < 80 || form.area > 650) {
-      setAreaError("Укажите площадь от 80 до 650 м².");
+      setAreaError("Укажите площадь от 80 до 650 м².");
       setShowEstimate(false);
       return;
     }
@@ -117,11 +117,11 @@ export function Calculator() {
     const nextErrors: Partial<LeadForm> = {};
 
     if (lead.name.trim().length < 2) {
-      nextErrors.name = "Укажите имя, чтобы мы могли к вам обратиться.";
+      nextErrors.name = "Укажите имя, чтобы мы могли к вам обратиться.";
     }
 
     if (lead.phone.replace(/\D/g, "").length < 10) {
-      nextErrors.phone = "Введите номер телефона в понятном формате.";
+      nextErrors.phone = "Введите номер телефона в понятном формате.";
     }
 
     setLeadErrors(nextErrors);
@@ -138,18 +138,17 @@ export function Calculator() {
         <span className="sheet-code tech-sm">Расчётный лист</span>
       </div>
 
-      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
+      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <div className="lg:pt-4">
           <SectionHead
             sheet="А-08"
             kicker="Предварительный расчёт"
-            title="Предварительный расчет без лишних звонков."
-            lead="Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом."
-            titleClassName="max-w-[11ch]"
+            title="Предварительный расчет без лишних звонков."
+            lead="Выберите основные параметры, чтобы увидеть ориентир по инвестициям в будущий дом."
             leadClassName="max-w-md"
           />
           <div className="mt-9 border-l-2 border-[var(--brick)] pl-4 text-sm leading-6 text-[var(--ink-soft)]">
-            Точная стоимость определяется после консультации, выбора проекта и анализа участка.
+            Точная стоимость определяется после консультации, выбора проекта и анализа участка.
           </div>
         </div>
 
@@ -199,8 +198,8 @@ export function Calculator() {
                 value={form.start}
                 onChange={(event) => setForm((current) => ({ ...current, start: event.target.value as EstimateForm["start"] }))}
               >
-                <option value="soon">В ближайшие месяцы</option>
-                <option value="season">В этом сезоне</option>
+                <option value="soon">В ближайшие месяцы</option>
+                <option value="season">В этом сезоне</option>
                 <option value="planning">Планирую заранее</option>
               </select>
             </label>
@@ -226,7 +225,7 @@ export function Calculator() {
               <div className="calc-result">
                 <p className="tech-sm tech text-[var(--ink-faint)]">Предварительный ориентир</p>
                 <p className="estimate-number num mt-2 text-[clamp(2rem,4vw,3.3rem)] font-extrabold leading-none tracking-[-0.05em] text-[var(--brick-deep)]">
-                  {animatedLow.toLocaleString("ru-RU")}–{animatedHigh.toLocaleString("ru-RU")}
+                  {animatedLow.toLocaleString("ru-RU")}-{animatedHigh.toLocaleString("ru-RU")}
                   <span className="ml-2 text-[0.9rem] font-bold tracking-normal text-[var(--ink-soft)]">млн ₽</span>
                 </p>
               </div>
@@ -280,7 +279,7 @@ export function Calculator() {
               {isSent && (
                 <p className="mt-5 flex items-center gap-2 bg-[rgb(168_69_48/10%)] px-4 py-3 text-sm font-bold text-[var(--brick-deep)]" role="status">
                   <CheckCircle size={19} weight="fill" aria-hidden="true" />
-                  Данные сохранены в интерфейсе. Мы подготовим ориентир в течение одного рабочего дня.
+                  Данные сохранены в интерфейсе. Мы подготовим ориентир в течение одного рабочего дня.
                 </p>
               )}
             </div>

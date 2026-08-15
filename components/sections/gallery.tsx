@@ -4,8 +4,6 @@ import { galleryItems } from "@/data/site";
 
 const gridSizes = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
 const aspectRatios = ["aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[16/10]"];
-/** Узлы, к которым ведут выноски на каждом кадре. */
-const notes = ["Внутренний двор", "Пластика фасада", "Свет и посадка", "Переход материала"];
 
 export function Gallery() {
   return (
@@ -17,9 +15,9 @@ export function Gallery() {
       <div className="mx-auto max-w-[1440px]">
         <SectionHead
           sheet="А-06"
-          kicker="Развёртки и виды"
-          title="Архитектурные решения для вашего будущего дома."
-          lead="Разные пропорции, свет и посадка на участок помогают найти образ, который будет близок именно вам."
+          kicker="Развёртки и виды"
+          title="Архитектурные решения для вашего будущего дома."
+          lead="Разные пропорции, свет и посадка на участок помогают найти образ, который будет близок именно вам."
           className="max-w-2xl"
         />
 
@@ -36,7 +34,7 @@ export function Gallery() {
                 <span className="gallery-note">
                   <span className="callout__dot" />
                   <span className="callout__leader" />
-                  <span className="callout__label tech-sm">{notes[index]}</span>
+                  <span className="callout__label tech-sm">{item.note}</span>
                 </span>
               </BlueprintMedia>
 

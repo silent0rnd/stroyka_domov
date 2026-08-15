@@ -18,7 +18,7 @@ const leftMarks = [0, 2, 4, 6, 8, 10];
 const callouts = [
   { label: "Облицовочный кирпич", top: "47%", left: "58%" },
   { label: "Плоская кровля", top: "33%", left: "78%" },
-  { label: "Переход: чертёж — факт", top: "62%", left: "31%" }
+  { label: "Переход: чертёж - факт", top: "62%", left: "31%" }
 ];
 
 export function Hero() {
@@ -139,20 +139,20 @@ export function Hero() {
           <p data-hero-reveal className="sheet-head__meta tech">
             <span className="sheet-head__code">А-01</span>
             <span className="sheet-head__rule" aria-hidden="true" />
-            <span>Москва и область</span>
+            <span>Москва и область</span>
           </p>
 
           <div className="hero-title mt-6">
             <span data-hero-wire className="hero-title__layer hero-title__wire" aria-hidden="true">
-              Кирпичный дом под ключ
+              Кирпичный дом под ключ
             </span>
             <h1 data-hero-title className="hero-title__layer hero-title__solid">
-              Кирпичный дом под ключ
+              Кирпичный дом под ключ
             </h1>
           </div>
 
           <p data-hero-reveal className="mt-6 max-w-[46ch] text-[1rem] leading-7 text-[var(--ink-soft)] sm:text-[1.05rem]">
-            Берем на себя путь от идеи до передачи дома. С понятной сметой, сроками и регулярным контролем работ.
+            Берем на себя путь от идеи до передачи дома. С понятной сметой, сроками и регулярным контролем работ.
           </p>
 
           <div data-hero-reveal className="mt-8 flex flex-wrap gap-3">
@@ -168,14 +168,14 @@ export function Hero() {
               <Ruler size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="tech-sm tech text-[var(--ink-faint)]">Стоимость</p>
-                <p className="num mt-1.5 text-sm font-extrabold">от 12 млн ₽</p>
+                <p className="num mt-1.5 text-sm font-extrabold">от 12 млн ₽</p>
               </div>
             </div>
             <div className="hero-fact flex items-center gap-3">
               <Timer size={22} weight="duotone" className="text-[var(--brick)]" aria-hidden="true" />
               <div>
                 <p className="tech-sm tech text-[var(--ink-faint)]">Срок</p>
-                <p className="num mt-1.5 text-sm font-extrabold">от 8 месяцев</p>
+                <p className="num mt-1.5 text-sm font-extrabold">от 8 месяцев</p>
               </div>
             </div>
           </div>
@@ -206,7 +206,7 @@ export function Hero() {
             <div className="sheet__canvas">
               <BlueprintMedia
                 src="./images/hero-blueprint-house.png"
-                alt="Кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
+                alt="Кирпичный дом в переходе от архитектурного чертежа к готовому фасаду"
                 sizes="(max-width: 1023px) 100vw, 58vw"
                 priority
                 motion="manual"

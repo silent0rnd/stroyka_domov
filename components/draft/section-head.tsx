@@ -11,6 +11,7 @@ type SectionHeadProps = {
   /** Значение на размерной линии под заголовком. */
   dim?: string;
   className?: string;
+  /** Ширина заголовочного бокса. По умолчанию 42rem — дальше его сужает колонка сетки. */
   titleClassName?: string;
   leadClassName?: string;
 };
@@ -26,7 +27,7 @@ export function SectionHead({
   lead,
   dim,
   className = "",
-  titleClassName = "",
+  titleClassName = "max-w-[42rem]",
   leadClassName = ""
 }: SectionHeadProps) {
   return (

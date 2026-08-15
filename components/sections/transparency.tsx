@@ -7,7 +7,7 @@ export function Transparency() {
   return (
     <section className="draft-sheet section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
       <div className="sheet-gutter" aria-hidden="true">
-        <span className="sheet-code tech-sm">Контроль и гарантии</span>
+        <span className="sheet-code tech-sm">Контроль и гарантии</span>
       </div>
 
       <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
@@ -15,9 +15,8 @@ export function Transparency() {
           <SectionHead
             sheet="А-10"
             kicker="Проверяемые обязательства"
-            title="Прозрачность, которую можно проверить в процессе."
-            lead="Договоренности должны быть видны не только на старте. Поэтому держим процесс стройки понятным на каждом этапе."
-            titleClassName="max-w-[12ch]"
+            title="Прозрачность, которую можно проверить в процессе."
+            lead="Договоренности должны быть видны не только на старте. Поэтому держим процесс стройки понятным на каждом этапе."
             leadClassName="max-w-xl"
           />
 
@@ -33,7 +32,7 @@ export function Transparency() {
 
         <BlueprintMedia
           src="./images/project-pine.png"
-          alt="Вариант исполнения кирпичного дома в природном окружении"
+          alt="Компактный двухэтажный кирпичный дом среди сосен"
           sizes="(max-width: 1023px) 100vw, 45vw"
           parallax
           className="min-h-[390px] lg:min-h-[540px]"

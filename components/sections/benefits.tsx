@@ -15,8 +15,8 @@ export function Benefits() {
         <SectionHead
           sheet="А-02"
           kicker="Ведомость договоренностей"
-          title="Предсказуемая стройка начинается с ясных договоренностей."
-          lead="Собрали главные опоры процесса, чтобы проектирование и строительство не превращались в черный ящик."
+          title="Предсказуемая стройка начинается с ясных договоренностей."
+          lead="Собрали главные опоры процесса, чтобы проектирование и строительство не превращались в черный ящик."
           dim={`${benefits.length} позиций`}
           className="max-w-2xl"
           leadClassName="max-w-xl"
@@ -26,7 +26,7 @@ export function Benefits() {
           <div className="spec__head tech-sm tech" aria-hidden="true">
             <span>№</span>
             <span>Наименование</span>
-            <span>Что это значит на практике</span>
+            <span>Что это значит на практике</span>
             <span />
           </div>
 

@@ -20,13 +20,13 @@ export function Contact() {
     const nextErrors: Partial<Record<keyof ContactValues, string>> = {};
 
     if (values.name.trim().length < 2) {
-      nextErrors.name = "Укажите имя, чтобы мы могли к вам обратиться.";
+      nextErrors.name = "Укажите имя, чтобы мы могли к вам обратиться.";
     }
     if (values.phone.replace(/\D/g, "").length < 10) {
-      nextErrors.phone = "Введите номер телефона в понятном формате.";
+      nextErrors.phone = "Введите номер телефона в понятном формате.";
     }
     if (!values.consent) {
-      nextErrors.consent = "Нужно согласие на обработку данных.";
+      nextErrors.consent = "Нужно согласие на обработку данных.";
     }
 
     setErrors(nextErrors);
@@ -60,12 +60,12 @@ export function Contact() {
             </p>
             <h2
               data-draft="text"
-              className="mt-6 max-w-[10ch] text-[clamp(2.25rem,4.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.065em]"
+              className="mt-6 max-w-[42rem] text-[clamp(2.25rem,4.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.065em]"
             >
               Обсудим дом, который подходит именно вашей семье.
             </h2>
             <p data-draft="text" className="mt-5 max-w-md text-[0.98rem] leading-7 text-[#d6d2ca]">
-              Оставьте контакты. Подготовим предварительный расчет и свяжемся в течение одного рабочего дня.
+              Оставьте контакты. Подготовим предварительный расчет и свяжемся в течение одного рабочего дня.
             </p>
           </div>
           <form className="grid gap-4" onSubmit={submit} noValidate>
@@ -103,7 +103,7 @@ export function Contact() {
                 aria-invalid={Boolean(errors.consent)}
                 aria-describedby={errors.consent ? "contact-consent-error" : undefined}
               />
-              Согласен на обработку персональных данных для обратной связи.
+              Согласен на обработку персональных данных для обратной связи.
             </label>
             {errors.consent && <span id="contact-consent-error" className="text-[0.78rem] font-medium text-[#f4b6a9]">{errors.consent}</span>}
             <button type="submit" className="mt-2 inline-flex min-h-[3.15rem] items-center justify-center gap-2 bg-[var(--terracotta)] px-6 text-sm font-extrabold text-[#2c2521] transition hover:-translate-y-0.5 hover:bg-[#dd8165] active:scale-[0.98] sm:w-fit">
@@ -113,7 +113,7 @@ export function Contact() {
             {success && (
               <p className="flex items-center gap-2 text-sm font-bold text-[#f4c2b6]" role="status">
                 <CheckCircle size={20} weight="fill" aria-hidden="true" />
-                Спасибо. Данные сохранены в интерфейсе, мы свяжемся с вами в течение рабочего дня.
+                Спасибо. Данные сохранены в интерфейсе, мы свяжемся с вами в течение рабочего дня.
               </p>
             )}
           </form>

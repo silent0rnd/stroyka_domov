@@ -42,8 +42,8 @@ export function BeforeAfter() {
           <SectionHead
             sheet="А-11"
             kicker="Проект / исполнение"
-            title="От архитектурной идеи к готовому фасаду."
-            lead="Сравните образ проекта и вариант исполнения. Перемещайте разделитель мышью, касанием или клавишами."
+            title="От архитектурной идеи к готовому фасаду."
+            lead="Сравните образ проекта и вариант исполнения. Перемещайте разделитель мышью, касанием или клавишами."
             className="max-w-2xl"
           />
           <p className="tech-sm tech text-[var(--ink-faint)]">
@@ -70,7 +70,7 @@ export function BeforeAfter() {
           <div className="absolute inset-0 overflow-hidden transition-[clip-path] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
             <Image
               src="./images/facade-blueprint.png"
-              alt="Архитектурная визуализация дома на чертеже"
+              alt="Архитектурная визуализация дома на чертеже"
               fill
               sizes="100vw"
               className="object-cover"
@@ -95,7 +95,7 @@ export function BeforeAfter() {
             max="100"
             value={position}
             onChange={(event) => setPosition(Number(event.target.value))}
-            aria-label="Сравнение архитектурной идеи и варианта исполнения"
+            aria-label="Сравнение архитектурной идеи и варианта исполнения"
           />
         </div>
       </div>

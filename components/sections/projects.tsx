@@ -49,8 +49,8 @@ export function Projects() {
           <SectionHead
             sheet="А-05"
             kicker="Концептуальные проекты"
-            title="Пространства с характером будущего дома."
-            lead="Это варианты для вдохновения и обсуждения. Каждый проект адаптируется под участок и привычки вашей семьи."
+            title="Пространства с характером будущего дома."
+            lead="Это варианты для вдохновения и обсуждения. Каждый проект адаптируется под участок и привычки вашей семьи."
             className="max-w-2xl"
             leadClassName="max-w-xl"
           />
@@ -86,7 +86,7 @@ export function Projects() {
           onKeyDown={handleKeyDown}
           onScroll={trackCurrent}
           className="project-rail mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 pr-4 outline-none"
-          aria-label="Галерея концептуальных проектов. Используйте стрелки влево и вправо для прокрутки."
+          aria-label="Галерея концептуальных проектов. Используйте стрелки влево и вправо для прокрутки."
         >
           {projects.map((project, index) => (
             <article key={project.title} className="project-card flex w-[min(84vw,25rem)] shrink-0 snap-start flex-col">

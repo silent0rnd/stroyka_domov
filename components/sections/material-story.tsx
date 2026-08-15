@@ -14,7 +14,7 @@ export function MaterialStory() {
         <div className="material-frame">
           <BlueprintMedia
             src="./images/project-courtyard.png"
-            alt="Архитектурное решение кирпичного дома с внутренним двором"
+            alt="Одноэтажный кирпичный дом с закрытым внутренним двором"
             sizes="(max-width: 1023px) 100vw, 48vw"
             className="material-media min-h-[400px] lg:min-h-[560px]"
           />
@@ -25,8 +25,8 @@ export function MaterialStory() {
             sheet="А-03"
             kicker="Смысл материала"
             title="Кирпич дает дому ощущение опоры."
-            lead="Это не только про фасад. Материал помогает собрать спокойное, теплое и выразительное пространство для семьи."
-            titleClassName="max-w-[11ch] text-[clamp(2rem,3.6vw,3.3rem)]"
+            lead="Это не только про фасад. Материал помогает собрать спокойное, теплое и выразительное пространство для семьи."
+            titleClassName="max-w-[42rem] text-[clamp(2rem,3.6vw,3.3rem)]"
             leadClassName="max-w-lg"
           />
 

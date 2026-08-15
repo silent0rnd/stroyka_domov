@@ -11,7 +11,7 @@ export function SiteFooter() {
             <span className="text-[1.05rem] font-extrabold tracking-[-0.04em]">ДомКирпич</span>
           </div>
           <p className="max-w-sm text-sm leading-6 text-[var(--ink-soft)]">
-            Кирпичные дома под ключ в Москве и Московской области.
+            Кирпичные дома под ключ в Москве и Московской области.
           </p>
         </div>
 
@@ -20,8 +20,8 @@ export function SiteFooter() {
           columns={6}
           className="footer-stamp mt-7"
           cells={[
-            { key: "Объект", value: "Кирпичные дома под ключ", span: 2 },
-            { key: "Регион", value: "Москва и область" },
+            { key: "Объект", value: "Кирпичные дома под ключ", span: 2 },
+            { key: "Регион", value: "Москва и область" },
             { key: "Телефон", value: "+7 (495) 000-00-00" },
             { key: "Почта", value: "hello@domkirpich.ru" },
             { key: "Лист", value: "13 / 13", accent: true },

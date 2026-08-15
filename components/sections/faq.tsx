@@ -6,17 +6,16 @@ export function Faq() {
   return (
     <section id="faq" className="draft-sheet section-rule px-4 py-20 sm:px-6 lg:px-10 lg:py-28">
       <div className="sheet-gutter" aria-hidden="true">
-        <span className="sheet-code tech-sm">Вопросы и ответы</span>
+        <span className="sheet-code tech-sm">Вопросы и ответы</span>
       </div>
 
-      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+      <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHead
             sheet="А-12"
-            kicker="Примечания к листам"
-            title="Отвечаем на важные вопросы заранее."
-            lead="Если не нашли свой вопрос, оставьте заявку. Поможем разобраться в спокойном разговоре."
-            titleClassName="max-w-[10ch]"
+            kicker="Примечания к листам"
+            title="Отвечаем на важные вопросы заранее."
+            lead="Если не нашли свой вопрос, оставьте заявку. Поможем разобраться в спокойном разговоре."
             leadClassName="max-w-md"
           />
         </div>

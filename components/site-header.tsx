@@ -12,7 +12,7 @@ export function SiteHeader() {
   return (
     <>
       <a className="skip-link" href="#main-content">
-        К основному содержанию
+        К основному содержанию
       </a>
       <header className="sticky top-0 z-40 border-b border-[var(--line-strong)] bg-[rgb(238_236_231/86%)] backdrop-blur-xl">
         {/* кромка листа: линейка с делениями и мерная полоса прогресса */}
@@ -21,7 +21,7 @@ export function SiteHeader() {
         </div>
 
         <div className="mx-auto flex h-[4.25rem] max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
-          <a href="#top" className="group flex items-center gap-2.5" aria-label="ДомКирпич, на главную">
+          <a href="#top" className="group flex items-center gap-2.5" aria-label="ДомКирпич, на главную">
             <span className="header-mark corner-ticks">Д</span>
             <span className="text-[0.96rem] font-extrabold tracking-[-0.04em] text-[var(--graphite)]">
               ДомКирпич
