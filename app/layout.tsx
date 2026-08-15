@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   title: "ДомКирпич - кирпичные дома под ключ",
   description:
     "Премиальные кирпичные дома под ключ в Москве и Московской области. Предварительный расчет стоимости за один рабочий день.",
+  /* Пути относительные: Pages отдаёт сайт из подкаталога /stroyka_domov/. */
+  icons: {
+    icon: [
+      { url: "./icon.svg", type: "image/svg+xml" },
+      { url: "./icon.png", type: "image/png", sizes: "32x32" }
+    ]
+  },
   openGraph: {
     title: "ДомКирпич - кирпичные дома под ключ",
     description:

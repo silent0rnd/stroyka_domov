@@ -25,13 +25,13 @@ export function TitleBlock({ cells, columns = 4, className = "", style }: TitleB
   return (
     <div
       className={`title-block ${className}`}
-      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, ...style }}
+      style={{ "--tb-cols": columns, ...style } as CSSProperties}
     >
       {cells.map((cell) => (
         <div
           key={cell.key}
           className="title-block__cell"
-          style={cell.span && cell.span > 1 ? { gridColumn: `span ${cell.span}` } : undefined}
+          style={cell.span && cell.span > 1 ? ({ "--tb-span": cell.span } as CSSProperties) : undefined}
         >
           <span className="title-block__key">{cell.key}</span>
           <span className={`title-block__val${cell.accent ? " title-block__val--brick" : ""}`}>{cell.value}</span>

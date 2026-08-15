@@ -106,7 +106,7 @@ export function Contact() {
               Согласен на обработку персональных данных для обратной связи.
             </label>
             {errors.consent && <span id="contact-consent-error" className="text-[0.78rem] font-medium text-[#f4b6a9]">{errors.consent}</span>}
-            <button type="submit" className="mt-2 inline-flex min-h-[3.15rem] items-center justify-center gap-2 bg-[var(--terracotta)] px-6 text-sm font-extrabold text-[#2c2521] transition hover:-translate-y-0.5 hover:bg-[#dd8165] active:scale-[0.98] sm:w-fit">
+            <button type="submit" className="mt-2 inline-flex min-h-[3.15rem] items-center justify-center gap-2 bg-[var(--terracotta)] px-6 text-sm font-extrabold text-[#1a1512] transition hover:-translate-y-0.5 hover:bg-[#dd8165] active:scale-[0.98] sm:w-fit">
               Получить расчет
               <ArrowRight size={18} weight="bold" aria-hidden="true" />
             </button>
