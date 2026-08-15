@@ -800,6 +800,22 @@ a {
   transform: translate(0, -50%);
 }
 
+/* на узких экранах выноска не должна перебивать цель */
+@media (max-width: 767px) {
+  .gallery-note {
+    left: 4%;
+    font-size: 0.62rem;
+  }
+
+  .gallery-note .callout__leader {
+    width: 0.9rem;
+  }
+
+  .gallery-note .callout__label {
+    padding: 0.25rem 0.38rem;
+  }
+}
+
 .gallery-caption {
   display: flex;
   align-items: baseline;
