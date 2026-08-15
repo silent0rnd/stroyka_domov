@@ -31,10 +31,14 @@ export function Gallery() {
                 parallax={index === 0 || index === 3}
                 className={aspectRatios[index]}
               >
-                <span className="gallery-note">
+                <span
+                  className="gallery-note"
+                  style={{ "--note-top": item.pointer.top, "--note-to": item.pointer.to } as React.CSSProperties}
+                >
                   <span className="callout__dot" />
                   <span className="callout__leader" />
                   <span className="callout__label tech-sm">{item.note}</span>
+                  <span className="callout__arrow" />
                 </span>
               </BlueprintMedia>
 

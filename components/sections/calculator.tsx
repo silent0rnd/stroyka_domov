@@ -270,7 +270,7 @@ export function Calculator() {
                 </label>
                 <div className="sm:col-span-2">
                   <button type="submit" className="button-primary">
-                    Получить предварительную смету
+                    Получить смету
                     <ArrowRight size={18} weight="bold" aria-hidden="true" />
                   </button>
                 </div>

@@ -192,6 +192,8 @@ a {
   left: 0;
   display: none;
   width: 2.6rem;
+  /* зазор, чтобы липкие подписи соседних секций не стыковались вплотную */
+  padding-block: 2rem;
   border-right: var(--lw-thin) solid var(--line);
   pointer-events: none;
 }
@@ -781,8 +783,9 @@ a {
 
 .gallery-note {
   position: absolute;
-  top: 50%;
-  left: 8%;
+  top: var(--note-top, 50%);
+  left: 6%;
+  right: calc(100% - var(--note-to, 60%));
   z-index: 6;
   display: flex;
   align-items: center;
@@ -1397,6 +1400,26 @@ a {
   width: 2rem;
   flex: none;
   background: rgb(249 248 244 / 72%);
+}
+
+/* линия от подписи до объекта на снимке */
+.callout__arrow {
+  position: relative;
+  height: var(--lw-main);
+  min-width: 0.75rem;
+  flex: 1 1 0;
+  background: rgb(249 248 244 / 72%);
+}
+
+.callout__arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  border: 0.28rem solid transparent;
+  border-left: 0.42rem solid rgb(249 248 244 / 85%);
+  border-right: 0;
+  transform: translateY(-50%);
 }
 
 .callout__label {

@@ -7,5 +7,6 @@ const widths = [640, 828, 1080, 1600];
 export default function imageLoader({ src, width }: { src: string; width: number }) {
   const closest = widths.find((candidate) => candidate >= width) ?? widths[widths.length - 1];
 
-  return src.replace(/\.png$/, `-${closest}.webp`);
+  /* Должно совпадать с sourceExt в scripts/generate-images.mjs. */
+  return src.replace(/\.(png|jpe?g)$/i, `-${closest}.webp`);
 }

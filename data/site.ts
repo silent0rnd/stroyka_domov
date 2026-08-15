@@ -131,25 +131,30 @@ export const projects: Project[] = [
 
 export const galleryItems = [
   {
-    image: "./images/gallery-terrace.png",
+    image: "./images/gallery-terrace.jpg",
     alt: "Терраса кирпичного дома с большим остеклением и теплым светом из интерьера",
     title: "Терраса вечером",
+    // выноска: top — уровень линии, to — куда упирается стрелка (в % кадра)
+    pointer: { top: "62%", to: "55%" },
     note: "Выход на террасу"
   },
   {
-    image: "./images/gallery-detail.png",
+    image: "./images/gallery-detail.jpg",
     alt: "Деталь фасада крупным планом: клинкерный кирпич, графитовая рама окна и деревянный софит",
     title: "Узел фасада вблизи",
+    pointer: { top: "56%", to: "50%" },
     note: "Кирпич и дерево"
   },
   {
-    image: "./images/gallery-entrance.png",
+    image: "./images/gallery-entrance.jpg",
+    pointer: { top: "55%", to: "76%" },
     alt: "Входная группа кирпичного дома с графитовым козырьком и известняковыми ступенями",
     title: "Вход и посадка на участок",
     note: "Входная группа"
   },
   {
-    image: "./images/gallery-autumn.png",
+    image: "./images/gallery-autumn.jpg",
+    pointer: { top: "48%", to: "40%" },
     alt: "Двухэтажный кирпичный дом со строгими горизонтальными линиями в осеннем саду",
     title: "Дом в осеннем саду",
     note: "Пластика объема"

@@ -1,5 +1,5 @@
 /**
- * Раскладывает каждый исходный PNG из public/images в webp нескольких ширин.
+ * Раскладывает каждый исходный PNG или JPG из public/images в webp нескольких ширин.
  * Статический экспорт не умеет оптимизировать картинки на лету, поэтому
  * варианты готовятся заранее, а image-loader.ts выбирает нужную ширину.
  *
@@ -23,13 +23,16 @@ const isFresh = async (target, source) => {
   }
 };
 
-const sources = (await readdir(dir)).filter((file) => file.endsWith(".png"));
+/** Должно совпадать с регуляркой в image-loader.ts. */
+const sourceExt = /\.(png|jpe?g)$/i;
+
+const sources = (await readdir(dir)).filter((file) => sourceExt.test(file));
 
 await Promise.all(
   sources.flatMap((file) =>
     widths.map(async (width) => {
       const source = dir + file;
-      const target = dir + file.replace(/\.png$/, `-${width}.webp`);
+      const target = dir + file.replace(sourceExt, `-${width}.webp`);
 
       if (await isFresh(target, source)) {
         return;
